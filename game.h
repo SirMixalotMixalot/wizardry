@@ -5,6 +5,7 @@
 #include <memory>
 #include "enums.h"
 #include "player.h"
+#include "hand.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ class Game {
         Player* getActivePlayer() const;
         Player* getInactivePlayer() const;
         void switchActivePlayer();
+        void startTurn();
         void endTurn();
 
         void draw();
@@ -31,9 +33,9 @@ class Game {
         void playCard(int index, int targetPlayer, char targetCard); // target player and card
         void useMinion(int index); // no target
         void useMinion(int index, int targetPlayer, char targetCard); // target player and card
-        void inspectMinion(int index);
+        Minion* inspectMinion(int index);
 
-        void getHand(); // for display
+        Hand* getHand(); // for display
 
         void notify(Command* command); // command pattern
         

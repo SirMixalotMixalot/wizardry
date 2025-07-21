@@ -10,7 +10,10 @@ Player::Player(const string& name, const string& deckFile, Game* game) : name(na
 
 void Player::drawCard() {
     if (!hand->isFull() && !deck->isEmpty()) {
-        hand->addCard(deck->draw());
+        unique_ptr<Card> card = deck->draw();
+        if (card) {
+            hand->addCard(deck->draw());
+        }
     }
 }
 
