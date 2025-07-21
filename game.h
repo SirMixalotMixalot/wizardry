@@ -15,7 +15,7 @@ class Game {
     Player* inactivePlayer;
 
     public:
-        Game(string name1, string name2);
+        Game(string name1, string name2, string deck1File, string deck2File);
         ~Game() = default;
         
         Player* getActivePlayer() const;

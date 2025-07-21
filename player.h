@@ -2,7 +2,9 @@
 #define PLAYER_H
 
 #include <string>
+#include <memory>
 #include "enums.h"
+#include "deck.h"
 
 using namespace std;
 
@@ -10,9 +12,10 @@ class Player {
     string name;
     int magic;
     int health;
+    unique_ptr<Deck> deck;
 
     public:
-        Player(const string& name);
+        Player(const string& name, const string& deckFile);
         ~Player() = default;
 
         std::string getName() const;

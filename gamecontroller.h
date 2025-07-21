@@ -15,7 +15,7 @@ class GameController {
         GameController();
         ~GameController() = default;
     
-        void playGame(const string& initFile);
+        void playGame(const string& initFile, const string& deck1File, const string& deck2File);
     
     private:
         void processCommand(const string& command);

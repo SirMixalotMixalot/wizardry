@@ -11,7 +11,7 @@ GameController::GameController() {
 
 // play game
 
-void GameController::playGame(const string& initFile) {
+void GameController::playGame(const string& initFile, const string& deck1File, const string& deck2File) {
     string name1;
     string name2;
     
@@ -28,7 +28,7 @@ void GameController::playGame(const string& initFile) {
         getline(file, name1);
         getline(file, name2);
 
-        game = make_unique<Game>(name1, name2);
+        game = make_unique<Game>(name1, name2, deck1File, deck2File);
         
         // read file line by line
         string line;
@@ -47,7 +47,7 @@ void GameController::playGame(const string& initFile) {
     } else {
         getline(cin, name1);
         getline(cin, name2);
-        game = make_unique<Game>(name1, name2);
+        game = make_unique<Game>(name1, name2, deck1File, deck2File);
     }
 
     string command;

@@ -7,6 +7,8 @@ using namespace std;
 
 struct gameArgs {
     string initFile = "";
+    string deck1File = "default.deck";
+    string deck2File = "default.deck";
 };
 
 int main(int argc, char* argv[]) {
@@ -20,11 +22,21 @@ int main(int argc, char* argv[]) {
                 args.initFile = argv[i + 1];
                 i++;
             }
+        } else if (arg == "-deck1") {
+            if (i + 1 < argc) {
+                args.deck1File = argv[i + 1];
+                i++;
+            }
+        } else if (arg == "-deck2") {
+            if (i + 1 < argc) {
+                args.deck2File = argv[i + 1];
+                i++;
+            }
         }
     }
 
     // initialize game controller
     GameController controller;
 
-    controller.playGame(args.initFile);
+    controller.playGame(args.initFile, args.deck1File, args.deck2File);
 }
