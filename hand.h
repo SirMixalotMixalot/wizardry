@@ -8,7 +8,7 @@ class Hand : public CardCollection {
 
     public:
         Hand() = default;
-        ~Hand() = default;
+        ~Hand() override = default;
         bool isFull() const;
 };
 

@@ -39,7 +39,7 @@ class Game {
         
         void trigger(Triggers trigger);
 
-        void getPlayer(int index); // player access
+        Player* getPlayer(int index); // player access
 };
 
 #endif

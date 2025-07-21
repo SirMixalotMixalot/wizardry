@@ -6,7 +6,7 @@
 class Graveyard : public CardCollection {
     public:
         Graveyard() = default;
-        ~Graveyard() = default;
+        ~Graveyard() override = default;
 };
 
 #endif

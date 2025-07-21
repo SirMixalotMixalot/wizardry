@@ -7,7 +7,7 @@
 class Board : public CardCollection {
     public:
         Board() = default;
-        ~Board() = default;
+        ~Board() override = default;
         
         void trigger(Triggers trigger);
 };

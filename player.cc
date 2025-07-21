@@ -8,8 +8,6 @@ Player::Player(const string& name, const string& deckFile, Game* game) : name(na
     graveyard = make_unique<Graveyard>();
 }
 
-Player::~Player() = default;
-
 void Player::drawCard() {
     if (!hand->isFull() && !deck->isEmpty()) {
         hand->addCard(deck->draw());
