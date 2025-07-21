@@ -1,5 +1,7 @@
 #include "deck.h"
+#include "card.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -9,18 +11,26 @@ Deck::Deck(const string& deckFile) {
     ifstream file(deckFile);
     string line;
     while (getline(file, line)) {
-        if (!line.empty()) {
-            cards.push_back(line);
-        }
+        // create card objects when needed
+        cout << line << endl;
     }
     
     file.close();
+}
 
-    // cout << "Deck: ";
+unique_ptr<Card> Deck::draw() {
+    if (isEmpty()) {
+        return nullptr;
+    } else {
+        unique_ptr<Card> card = move(cards.back());
+        cards.pop_back();
+        return card;
+    }
+}
 
-    // for (const string& card : cards) {
-    //     cout << card << " ";
-    // }
-    
-    // cout << endl;
+void Deck::shuffle() {}
+
+
+bool Deck::isEmpty() const {
+    return cards.empty();
 }

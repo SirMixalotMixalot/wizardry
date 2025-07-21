@@ -5,6 +5,10 @@
 #include <memory>
 #include "enums.h"
 #include "deck.h"
+#include "hand.h"
+#include "board.h"
+#include "graveyard.h"
+#include "game.h"
 
 using namespace std;
 
@@ -13,12 +17,16 @@ class Player {
     int magic;
     int health;
     unique_ptr<Deck> deck;
+    unique_ptr<Hand> hand;
+    unique_ptr<Board> board;
+    unique_ptr<Graveyard> graveyard;
+    Game* game;
 
     public:
-        Player(const string& name, const string& deckFile);
+        Player(const string& name, const string& deckFile, Game* game);
         ~Player() = default;
 
-        std::string getName() const;
+        string getName() const;
         int getMagic() const;
         int getHealth() const;
         void setMagic(int magic);
@@ -29,10 +37,10 @@ class Player {
         Card* playCard(int index);
 
         Minion* getMinion(int index);
-        Game* getGame();
-        Hand* getHand();
-        Deck* getDeck();
-        Board* getBoard();
+        Game* getGame() const;
+        Hand* getHand() const;
+        Deck* getDeck() const;
+        Board* getBoard() const;
 
         void trigger(Triggers trigger);
 };

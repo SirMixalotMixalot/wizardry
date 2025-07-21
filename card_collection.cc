@@ -11,7 +11,7 @@ void CardCollection::addCard(unique_ptr<Card> card) {
 }
 
 void CardCollection::removeCard(int index) {
-    if (index < 0 || index >= getSize()) {
+    if (index < 0 || index >= cards.size()) {
         throw out_of_range("Index out of range");
     }
     cards.erase(cards.begin() + index);
@@ -19,7 +19,7 @@ void CardCollection::removeCard(int index) {
 
 
 Card* CardCollection::getCard(int index) const {
-    if (index < 0 || index >= getSize()) {
+    if (index < 0 || index >= cards.size()) {
         throw out_of_range("Index out of range");
     }
     return cards[index].get();

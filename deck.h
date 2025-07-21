@@ -2,18 +2,17 @@
 #define DECK_H
 
 #include <vector>
-#include <string>
-#include <iostream>
 
 using namespace std;
 
 class Deck {
-    vector<string> cards;
+    vector<unique_ptr<Card>> cards;
 
     public:
         Deck(const string& deckFile);
         ~Deck() = default;
 
+        unique_ptr<Card> draw();
         void shuffle();
         bool isEmpty() const;
 };
