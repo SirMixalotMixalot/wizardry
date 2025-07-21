@@ -24,7 +24,3 @@ Card* CardCollection::getCard(int index) const {
     }
     return cards[index].get();
 }
-
-int CardCollection::getSize() const {
-    return cards.size();
-}
