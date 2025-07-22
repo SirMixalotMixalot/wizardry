@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.proto": "proto3",
         "sstream": "cpp",
         "istream": "cpp",
         "iostream": "cpp",
@@ -7,6 +8,8 @@
         "fstream": "cpp",
         "vector": "cpp",
         "string": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "xhash": "cpp",
+        "unordered_map": "cpp"
     }
 }

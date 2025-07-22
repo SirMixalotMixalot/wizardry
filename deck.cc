@@ -2,23 +2,24 @@
 #include "card.h"
 #include <fstream>
 #include <iostream>
-#include "airelemental.h"
-#include "earthelemental.h"
-
+#include "services/card_factory.h"
+#include <memory>
 using namespace std;
 
 Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {
     cards.clear();
-    
     ifstream file(deckFile);
     string line;
     while (getline(file, line)) {
-        if (line == "Air Elemental") {
-            cards.push_back(make_unique<AirElemental>(owner));
-        } else if (line == "Earth Elemental") {
-            cards.push_back(make_unique<EarthElemental>(owner));
-        } else {
-            
+        try {
+            unique_ptr<Card> card = CardFactory::createMinion(line, owner);
+            if (card) {
+                cards.push_back(move(card));
+            } else {
+                cerr << "Failed to create card: " << line << endl;
+            }
+        } catch (const std::invalid_argument& e) {
+            cerr << "Error creating card from file: " << e.what() << endl;
         }
     }
     

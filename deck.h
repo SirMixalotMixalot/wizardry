@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "card.h"
-
+#include <memory>
 using namespace std;
 
 class Deck {

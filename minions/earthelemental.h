@@ -1,7 +1,7 @@
 #ifndef EARTHELEMENTAL_H
 #define EARTHELEMENTAL_H
 
-#include "minion.h"
+#include "../minion.h"
 
 class EarthElemental : public Minion {
     public:

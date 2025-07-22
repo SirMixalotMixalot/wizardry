@@ -1,15 +1,17 @@
-CXX=g++
-CXXFLAGS= -std=c++14 -Wall -g -MMD 
-EXEC=sorcery
-CCFILES=$(wildcard *.cc)
-OBJECTS=${CCFILES:.cc=.o}
-DEPENDS=${CCFILES:.cc=.d}
+CXX       := g++
+CXXFLAGS  := -std=c++14 -Wall -g
+CPPFLAGS  := -MMD -MP -Iminions -Iservices
+EXEC      := sorcery
 
-${EXEC}:${OBJECTS}
-	${CXX} ${OBJECTS} -o ${EXEC}
+SRCS := $(wildcard *.cc minions/*.cc services/*.cc)
+OBJS := $(SRCS:.cc=.o)
+DEPS := $(OBJS:.o=.d)
 
--include ${DEPENDS}
+$(EXEC): $(OBJS)
+	$(CXX) $(OBJS) -o $@
+
+-include $(DEPS)
 
 .PHONY: clean
 clean:
-	rm ${EXEC} ${OBJECTS} ${DEPENDS}
+	$(RM) $(EXEC) $(OBJS) $(DEPS)
