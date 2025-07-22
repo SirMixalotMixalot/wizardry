@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include "attackcommand.h"
+#include "playcommand.h"
 
 using namespace std;
 
@@ -30,6 +31,8 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         getline(file, name2);
 
         game = make_unique<Game>(name1, name2, deck1File, deck2File);
+
+        start();
         
         // read file line by line
         string line;
@@ -49,6 +52,7 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         getline(cin, name1);
         getline(cin, name2);
         game = make_unique<Game>(name1, name2, deck1File, deck2File);
+        start();
     }
 
     string command;
@@ -119,6 +123,10 @@ void GameController::end() {
     game->startTurn();
 }
 
+void GameController::start() {
+    game->startTurn();
+}
+
 void GameController::quit() {}
 
 void GameController::draw() {
@@ -142,7 +150,22 @@ void GameController::attack(const string& args) {
 }
 
 void GameController::play(const string& args) {
-    cout << "play" << args << endl;
+    istringstream iss(args);
+    int i;
+    int p;
+    int t;
+    char target_card;
+    iss >> i;
+    if (iss >> p && iss >> target_card) {
+        if (target_card == 'r') {
+            t = 0;
+        } else {
+            t = target_card - '0';
+        }
+        game->notify(make_unique<PlayCommand>(i - 1, p - 1, t));
+    } else {
+        game->notify(make_unique<PlayCommand>(i - 1));
+    }
 }
 
 void GameController::use(const string& args) {

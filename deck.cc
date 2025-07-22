@@ -15,12 +15,10 @@ Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {
     while (getline(file, line)) {
         if (line == "Air Elemental") {
             cards.push_back(make_unique<AirElemental>(owner));
-            cout << line << endl;
         } else if (line == "Earth Elemental") {
             cards.push_back(make_unique<EarthElemental>(owner));
-            cout << line << endl;
         } else {
-            cout << line << endl;
+            
         }
     }
     
