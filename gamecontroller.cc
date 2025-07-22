@@ -1,7 +1,9 @@
 #include "gamecontroller.h"
+#include "view.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "textualdisplay.h"
 #include "attackcommand.h"
 #include "playcommand.h"
 #include "minion.h"
@@ -10,7 +12,10 @@ using namespace std;
 
 // constructor
 GameController::GameController() {
+    view = make_unique<TextualDisplay>();
 }
+
+GameController::~GameController() = default;
 
 // play game
 
@@ -116,17 +121,7 @@ void GameController::processCommand(const string& command) {
 }
 
 void GameController::help() {
-    cout << "Commands:" << endl;
-    cout << "help -- Display this message" << endl;
-    cout << "end -- End this current player's turn" << endl;
-    cout << "quit -- End the game" << endl;
-    cout << "attack minion other-minion -- Orders minion to attack other-minion" << endl;
-    cout << "attack minion -- Orders minion to attack the opponent" << endl;
-    cout << "play card [target-player target-card] -- Play card, optionally targeting target-card owned by target-player" << endl;
-    cout << "use minion [target-player target-card] -- Use minion's special ability, optionally targeting target-card owned by target-player" << endl;
-    cout << "inspect minion -- View a minion's card and all enchantments on that minion" << endl;
-    cout << "hand -- Describe all cards in your hand" << endl;
-    cout << "board -- Describe all cards on the board" << endl;
+    view->help();
 }
 
 void GameController::end() {
@@ -139,7 +134,6 @@ void GameController::start() {
 }
 
 void GameController::quit() {
-    cout << "Quitting game" << endl;
 }
 
 void GameController::draw() {
@@ -192,38 +186,16 @@ void GameController::describe(const string& args) {
     if (i > 0 and i <= game->getActivePlayer()->getBoard()->getSize()) {
         Minion* minion = dynamic_cast<Minion*>(game->getActivePlayer()->getBoard()->getCard(i - 1));
         if (minion) {
-            cout << "Minion " << i << ": " << minion->getName() << endl;
-            cout << "Description: " << minion->getDescription() << endl;
-            cout << "Cost: " << minion->getCost() << endl;
-            cout << "Attack: " << minion->getAttack() << endl;
-            cout << "Defense: " << minion->getDefense() << endl;
-            cout << "Actions: " << minion->getActions() << endl;
-        } else {
-            cout << "Invalid minion" << endl;
+            view->inspect(*minion);
         }
-    } else {
-        cout << "Invalid index" << endl;
     }
 }
 
 void GameController::hand() {
-    cout << game->getActivePlayer()->getName() << "'s Hand: " << endl;
-    if (game->getActivePlayer()->getHand()->getSize() > 0) {
-        for (int i = 0; i < game->getActivePlayer()->getHand()->getSize(); i++) {
-            cout << "Card " << i + 1 << ": " << game->getActivePlayer()->getHand()->getCard(i)->getName() << endl;
-        }
-    } else {
-        cout << "No cards in hand" << endl;
-    }
+    view->showHand(*game->getActivePlayer()->getHand());
 }
+    
 
 void GameController::board() {
-    cout << game->getActivePlayer()->getName() << "'s Board: " << endl;
-    if (game->getActivePlayer()->getBoard()->getSize() > 0) {
-        for (int i = 0; i < game->getActivePlayer()->getBoard()->getSize(); i++) {
-            cout << "Card " << i + 1 << ": " << game->getActivePlayer()->getBoard()->getCard(i)->getName() << endl;
-        }
-    } else {
-        cout << "No cards on the board" << endl;
-    }
+    view->showBoard(*game);
 }

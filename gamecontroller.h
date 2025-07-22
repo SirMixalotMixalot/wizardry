@@ -10,10 +10,11 @@ using namespace std;
 class GameController {
     // pointers to game and view objects
     unique_ptr<Game> game;
+    unique_ptr<View> view;
     
     public:
         GameController();
-        ~GameController() = default;
+        ~GameController();
     
         void playGame(const string& initFile, const string& deck1File, const string& deck2File);
     
