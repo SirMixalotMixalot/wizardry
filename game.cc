@@ -62,6 +62,7 @@ void Game::attack(int index) {
     Minion* minion = activePlayer->getMinion(index);
     if (minion != nullptr && minion->getActions() > 0) {
         inactivePlayer->setHealth(inactivePlayer->getHealth() - minion->getAttack());
+        cout << inactivePlayer->getName() << "'s health is now " << inactivePlayer->getHealth() << endl;
         minion->setActions(minion->getActions() - 1);
     }
 }
