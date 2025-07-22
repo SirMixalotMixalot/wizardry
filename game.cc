@@ -39,6 +39,11 @@ void Game::switchActivePlayer() {
 void Game::startTurn() {
     activePlayer->setMagic(activePlayer->getMagic() + 1);
     activePlayer->drawCard();
+    for (int i = 0; i < activePlayer->getBoard()->getSize(); i++) {
+        if (activePlayer->getMinion(i)) {
+            activePlayer->getMinion(i)->restoreActions();
+        }
+    }
     // start of turn effects trigger
 }
 
@@ -63,7 +68,9 @@ void Game::attack(int index) {
 
 void Game::attack(int index, int targetIndex) {}
 
-void Game::playCard(int index) {}
+void Game::playCard(int index) {
+    activePlayer->playCard(index);
+}
 
 void Game::playCard(int index, int targetPlayer, char targetCard) {}
 

@@ -10,17 +10,23 @@ void CardCollection::addCard(unique_ptr<Card> card) {
     cards.push_back(move(card));
 }
 
-void CardCollection::removeCard(int index) {
+unique_ptr<Card> CardCollection::removeCard(int index) {
     if (index < 0 || index >= cards.size()) {
-        throw out_of_range("Index out of range");
+        throw invalid_argument("index out of range");
     }
+    unique_ptr<Card> card = move(cards[index]);
     cards.erase(cards.begin() + index);
+    return card;
 }
 
 
 Card* CardCollection::getCard(int index) const {
     if (index < 0 || index >= cards.size()) {
-        throw out_of_range("Index out of range");
+        return nullptr;
     }
     return cards[index].get();
+}
+
+int CardCollection::getSize() const {
+    return cards.size();
 }

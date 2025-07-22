@@ -21,6 +21,7 @@ class GameController {
         void processCommand(const string& command);
         void help();
         void end();
+        void start();
         void quit();
         void draw();
         void discard(const string& args);

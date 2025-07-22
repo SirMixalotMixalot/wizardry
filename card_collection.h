@@ -15,8 +15,9 @@ class CardCollection {
         virtual ~CardCollection() = 0;
         
         void addCard(unique_ptr<Card> card);
-        void removeCard(int index);
+        unique_ptr<Card> removeCard(int index);
         Card* getCard(int index) const;
+        int getSize() const;
 };
 
 #endif

@@ -2,6 +2,8 @@
 #include "minion.h"
 #include <iostream>
 
+using namespace std;
+
 Player::Player(const string& name, const string& deckFile, Game* game) : name(name), magic(3), health(20), game(game) {
     deck = make_unique<Deck>(deckFile, this);
     hand = make_unique<Hand>();
@@ -13,14 +15,31 @@ void Player::drawCard() {
     if (!hand->isFull() && !deck->isEmpty()) {
         unique_ptr<Card> card = deck->draw();
         if (card) {
-            hand->addCard(deck->draw());
+            hand->addCard(move(card));
         }
     }
 }
 
 Card* Player::discardCard(int index) {}
 
-Card* Player::playCard(int index) {}
+Card* Player::playCard(int index) {
+    if (index < 0 || index >= hand->getSize()) {
+        cout << "Invalid card index" << endl;
+        return nullptr;
+    }
+
+    Card* card = hand->getCard(index);
+    if (magic < card->getCost()) {
+        cout << "Not enough magic" << endl;
+        return nullptr;
+    }
+
+    magic -= card->getCost();
+    unique_ptr<Card> playedCard = hand->removeCard(index);
+    Card* rawCard = playedCard.get();
+    board->addCard(move(playedCard));
+    return rawCard;
+}
 
 Minion* Player::getMinion(int index) {
     Card* card = board->getCard(index);
