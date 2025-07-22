@@ -114,9 +114,7 @@ void GameController::help() {
 }
 
 void GameController::end() {
-    cout << "End of turn " << game->getActivePlayer()->getName() << endl;
     game->endTurn();
-    cout << "Start of turn " << game->getActivePlayer()->getName() << endl;
     game->startTurn();
 }
 

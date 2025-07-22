@@ -14,7 +14,7 @@ class Card {
 
     public:
         explicit Card(string name, Player* owner, string description, int cost);
-        ~Card() = default;
+        virtual ~Card() = default;
 
         string getName() const;
         Player* getOwner() const;
