@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "attackcommand.h"
 
 using namespace std;
 
@@ -129,7 +130,15 @@ void GameController::discard(const string& args) {
 }
 
 void GameController::attack(const string& args) {
-    cout << "attack" << args << endl;
+    istringstream iss(args);
+    int i;
+    int j;
+    iss >> i;
+    if (iss >> j) {
+        game->notify(make_unique<AttackCommand>(i - 1, j - 1));
+    } else {
+        game->notify(make_unique<AttackCommand>(i - 1));
+    }
 }
 
 void GameController::play(const string& args) {

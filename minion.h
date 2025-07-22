@@ -9,12 +9,13 @@ class Minion : public Card {
     int actions;
 
     public:
-        Minion(string name, Player* owner, string description, int cost, int attack, int defense, int actions);
+        Minion(string name, Player* owner, string description, int cost, int attack, int defense);
         ~Minion() override = default;
 
         int getAttack() const;
         int getDefense() const;
         int getActions() const;
+        virtual bool canUseAbilities() const = 0;
 
         void use() override; // activated ability
         void use(int index, char target) override;
@@ -23,6 +24,7 @@ class Minion : public Card {
 
         void setAttack(int attack);
         void setDefense(int defense);
+        void setActions(int actions);
 };
 
 #endif

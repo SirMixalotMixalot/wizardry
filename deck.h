@@ -8,9 +8,10 @@ using namespace std;
 
 class Deck {
     vector<unique_ptr<Card>> cards;
+    Player* owner;
 
     public:
-        Deck(const string& deckFile);
+        Deck(const string& deckFile, Player* owner);
         ~Deck() = default;
 
         unique_ptr<Card> draw();

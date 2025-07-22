@@ -2,8 +2,8 @@
 
 using namespace std;
 
-Minion::Minion(string name, Player* owner, string description, int cost, int attack, int defense, int actions)
-    : Card(name, owner, description, cost), attack(attack), defense(defense), actions(actions) {}
+Minion::Minion(string name, Player* owner, string description, int cost, int attack, int defense)
+    : Card(name, owner, description, cost), attack(attack), defense(defense), actions(0) {}
 
 int Minion::getAttack() const {
     return attack;
@@ -23,6 +23,10 @@ void Minion::setAttack(int attack) {
 
 void Minion::setDefense(int defense) {
     this->defense = defense;
+}
+
+void Minion::setActions(int actions) {
+    this->actions = actions;
 }
 
 void Minion::restoreActions() {

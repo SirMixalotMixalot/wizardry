@@ -2,17 +2,26 @@
 #include "card.h"
 #include <fstream>
 #include <iostream>
+#include "airelemental.h"
+#include "earthelemental.h"
 
 using namespace std;
 
-Deck::Deck(const string& deckFile) {
+Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {
     cards.clear();
     
     ifstream file(deckFile);
     string line;
     while (getline(file, line)) {
-        // create card objects when needed
-        cout << line << endl;
+        if (line == "Air Elemental") {
+            cards.push_back(make_unique<AirElemental>(owner));
+            cout << line << endl;
+        } else if (line == "Earth Elemental") {
+            cards.push_back(make_unique<EarthElemental>(owner));
+            cout << line << endl;
+        } else {
+            cout << line << endl;
+        }
     }
     
     file.close();

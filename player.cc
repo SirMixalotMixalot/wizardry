@@ -1,8 +1,9 @@
 #include "player.h"
+#include "minion.h"
 #include <iostream>
 
 Player::Player(const string& name, const string& deckFile, Game* game) : name(name), magic(3), health(20), game(game) {
-    deck = make_unique<Deck>(deckFile);
+    deck = make_unique<Deck>(deckFile, this);
     hand = make_unique<Hand>();
     board = make_unique<Board>();
     graveyard = make_unique<Graveyard>();
@@ -21,7 +22,10 @@ Card* Player::discardCard(int index) {}
 
 Card* Player::playCard(int index) {}
 
-Minion* Player::getMinion(int index) {}
+Minion* Player::getMinion(int index) {
+    Card* card = board->getCard(index);
+    return dynamic_cast<Minion*>(card);
+}
 
 Game* Player::getGame() const {
     return game;

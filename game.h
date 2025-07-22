@@ -37,7 +37,7 @@ class Game {
 
         Hand* getHand(); // for display
 
-        void notify(Command* command); // command pattern
+        void notify(unique_ptr<Command> command); // command pattern
         
         void trigger(Triggers trigger);
 

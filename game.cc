@@ -1,4 +1,6 @@
 #include "game.h"
+#include "command.h"
+#include "minion.h"
 #include <iostream>
 
 using namespace std;
@@ -51,7 +53,13 @@ void Game::draw() {
 
 void Game::discard(int index) {}
 
-void Game::attack(int index) {}
+void Game::attack(int index) {
+    Minion* minion = activePlayer->getMinion(index);
+    if (minion != nullptr && minion->getActions() > 0) {
+        inactivePlayer->setHealth(inactivePlayer->getHealth() - minion->getAttack());
+        minion->setActions(minion->getActions() - 1);
+    }
+}
 
 void Game::attack(int index, int targetIndex) {}
 
@@ -69,6 +77,8 @@ Hand* Game::getHand() {
     return activePlayer->getHand();
 }
 
-void Game::notify(Command* command) {}
+void Game::notify(unique_ptr<Command> command) {
+    command->execute(*this);
+}
 
 void Game::trigger(Triggers trigger) {}

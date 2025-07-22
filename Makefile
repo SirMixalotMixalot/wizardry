@@ -3,7 +3,7 @@ CXXFLAGS= -std=c++14 -Wall -g -MMD
 EXEC=sorcery
 CCFILES=$(wildcard *.cc)
 OBJECTS=${CCFILES:.cc=.o}
-DEPENDS=${CCFILEs:.cc=.d}
+DEPENDS=${CCFILES:.cc=.d}
 
 ${EXEC}:${OBJECTS}
 	${CXX} ${OBJECTS} -o ${EXEC}
