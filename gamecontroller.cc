@@ -183,7 +183,7 @@ void GameController::describe(const string& args) {
     istringstream iss(args);
     int i;
     iss >> i;
-    if (i > 0 and i <= game->getActivePlayer()->getBoard()->getSize()) {
+    if (i > 0 && i <= game->getActivePlayer()->getBoard()->getSize()) {
         Minion* minion = dynamic_cast<Minion*>(game->getActivePlayer()->getBoard()->getCard(i - 1));
         if (minion) {
             view->inspect(*minion);
