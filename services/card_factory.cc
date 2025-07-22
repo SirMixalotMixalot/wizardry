@@ -26,7 +26,7 @@ static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators
     return table;
 }
 
-std::unique_ptr<Card> CardFactory::createMinion(const std::string& type, Player* owner) {
+std::unique_ptr<Card> CardFactory::createCard(const std::string& type, Player* owner) {
     const auto& creationTable = creators();
     auto it = creationTable.find(type);
     if (it == creationTable.end()) {
