@@ -2,6 +2,8 @@
 
 Enchantment::Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, Minion* next) : Minion(name, owner, description, cost, 0, 0), attackModifier(attackModifier), defenseModifier(defenseModifier), next(next) {}
 
+Enchantment::~Enchantment() = default;
+
 string Enchantment::getAttackModifier() const {
     return attackModifier;
 }
@@ -32,6 +34,14 @@ int Enchantment::getDefense() const {
 
 int Enchantment::getActions() const {
     return next->getActions();
+}
+
+int Enchantment::getActivatedAbilityCost() const {
+    return next->getActivatedAbilityCost();
+}
+
+bool Enchantment::canUseAbilities() const {
+    return next->canUseAbilities();
 }
 
 void Enchantment::setAttack(int attack) {

@@ -11,7 +11,7 @@ class Enchantment : public Minion {
         Minion* next;
     public:
         Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, Minion* next);
-        ~Enchantment() override = default;
+        ~Enchantment() override = 0;
 
         string getAttackModifier() const;
         string getDefenseModifier() const;
@@ -24,7 +24,8 @@ class Enchantment : public Minion {
         int getAttack() const override;
         int getDefense() const override;
         int getActions() const override;
-        bool canUseAbilities() const = 0;
+        int getActivatedAbilityCost() const override;
+        bool canUseAbilities() const override;
 
         void setAttack(int attack) override; // call next's setAttack()
         void setDefense(int defense) override; // call next's setDefense()

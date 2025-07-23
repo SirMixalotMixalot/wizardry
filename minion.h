@@ -15,6 +15,7 @@ class Minion : public Card {
         virtual int getAttack() const;
         virtual int getDefense() const;
         virtual int getActions() const;
+        virtual int getActivatedAbilityCost() const; // NOTE: IMPLEMENTATION NEEDED
         virtual bool canUseAbilities() const = 0;
 
         void use() override; // activated ability
