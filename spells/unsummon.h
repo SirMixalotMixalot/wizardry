@@ -9,7 +9,7 @@ public:
     Unsummon(Player* owner);
     ~Unsummon() override = default;
 
-    unique_ptr<Command> use(int index, char target) override;
+    unique_ptr<Command> use(int index, int target) override;
     unique_ptr<Command> use() override; 
 };
 

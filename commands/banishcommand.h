@@ -4,11 +4,11 @@
 #include "command.h"
 
 class BanishCommand : public Command {
-    int index;
+    int targetCard; // -1 for ritual, 0-4 for minion index
     bool banishPlayer1;
 public:
 
-    BanishCommand(int i, bool player1);
+    BanishCommand(int target, bool player1);
     ~BanishCommand() override = default;
 
     void execute(Game& game) override;

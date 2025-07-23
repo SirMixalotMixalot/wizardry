@@ -9,7 +9,7 @@ public:
     ~Blizzard() override = default;
     unique_ptr<Command> use() override;
 
-    unique_ptr<Command> use(int player, char targetChild) override;
+    unique_ptr<Command> use(int player, int targetChild) override;
 };
 
 #endif // Blizzard_H

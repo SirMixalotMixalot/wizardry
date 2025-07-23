@@ -8,6 +8,6 @@ unique_ptr<Command> Blizzard::use() {
     return make_unique<BlizzardCommand>();
 }
 
-unique_ptr<Command> Blizzard::use(int index, char target) {
+unique_ptr<Command> Blizzard::use(int index, int target) {
     throw runtime_error("Blizzard spell does not require a target index or player.");
 }

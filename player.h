@@ -37,7 +37,7 @@ class Player {
 
         void drawCard();
         Card* discardCard(int index);
-        Card* playCard(int index, int targetPlayer = -1, char targetCard = '0'); // targetPlayer -1 means no target
+        Card* playCard(int index, int targetPlayer = -1, int targetCard = 0); // targetPlayer -1 means no target
 
         Minion* getMinion(int index);
         Game* getGame() const;

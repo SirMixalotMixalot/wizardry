@@ -23,7 +23,7 @@ class Card {
         int getCost() const;
     
         virtual unique_ptr<Command> use() = 0;
-        virtual unique_ptr<Command> use(int player, char targetCard) = 0;
+        virtual unique_ptr<Command> use(int player, int targetCard) = 0;
         void trigger(Triggers trigger);
 };
 

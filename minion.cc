@@ -35,4 +35,4 @@ void Minion::restoreActions() {
 
 unique_ptr<Command> Minion::use() {}
 
-unique_ptr<Command> Minion::use(int index, char target) {}
+unique_ptr<Command> Minion::use(int index, int target) {}

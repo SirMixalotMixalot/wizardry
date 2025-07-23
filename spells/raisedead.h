@@ -7,7 +7,7 @@ public:
     RaiseDead(Player* owner);
     ~RaiseDead() override = default;
 
-    unique_ptr<Command> use(int player, char targetCard) override;
+    unique_ptr<Command> use(int player, int targetCard) override;
     unique_ptr<Command> use() override;
 };
 
