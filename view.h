@@ -14,6 +14,7 @@ class View {
         virtual void inspect(const Minion& minion) = 0;
         virtual void showBoard(const Game& game) = 0;
         virtual void showHand(const Hand& hand) = 0;
+        virtual void invalidCommand() = 0;
 };
 
 #endif

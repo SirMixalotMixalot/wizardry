@@ -66,7 +66,6 @@ void TextualDisplay::showBoard(const Game& game) {
 }
  
 void TextualDisplay::showHand(const Hand& hand) {
-    cout << "Hand: " << endl;
     for (int i = 0; i < hand.getSize(); i++) {
         cout << "Card " << i + 1 << ": " << hand.getCard(i)->getName() << endl;
     }
@@ -75,5 +74,7 @@ void TextualDisplay::showHand(const Hand& hand) {
     }
 }
 
-
+void TextualDisplay::invalidCommand() {
+    cerr << "Invalid command" << endl;
+}
 

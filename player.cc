@@ -24,13 +24,11 @@ Card* Player::discardCard(int index) {}
 
 Card* Player::playCard(int index) {
     if (index < 0 || index >= hand->getSize()) {
-        cout << "Invalid card index" << endl;
         return nullptr;
     }
 
     Card* card = hand->getCard(index);
     if (magic < card->getCost()) {
-        cout << "Not enough magic" << endl;
         return nullptr;
     }
 

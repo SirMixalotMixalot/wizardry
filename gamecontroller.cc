@@ -65,7 +65,6 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
 
     // main loop, take additional commands
     while (true) {
-        std::cout << "Enter command: ";
         getline(cin, command);
         
         // process command
@@ -81,7 +80,6 @@ void GameController::processCommand(const string& command) {
     istringstream iss(command);
     string cmd;
     iss >> cmd;
-
 
     if (cmd == "help") {
         help();
@@ -116,7 +114,7 @@ void GameController::processCommand(const string& command) {
     } else if (cmd == "board") {
         board();
     } else {
-        cout << "Invalid command" << endl;
+        view->invalidCommand();
     }
 }
 
@@ -149,7 +147,17 @@ void GameController::attack(const string& args) {
     int i;
     int j;
     iss >> i;
+
+    if (i < 1 || i > game->getActivePlayer()->getBoard()->getSize()) {
+        view->invalidCommand();
+        return;
+    }
+
     if (iss >> j) {
+        if (j < 1 || j > game->getInactivePlayer()->getBoard()->getSize()) {
+            view->invalidCommand();
+            return;
+        }
         game->notify(make_unique<AttackCommand>(i - 1, j - 1));
     } else {
         game->notify(make_unique<AttackCommand>(i - 1));
@@ -163,12 +171,24 @@ void GameController::play(const string& args) {
     int t;
     char target_card;
     iss >> i;
+
+    if (i < 1 || i > game->getActivePlayer()->getHand()->getSize()) {
+        view->invalidCommand();
+        return;
+    }
+
     if (iss >> p && iss >> target_card) {
         if (target_card == 'r') {
             t = 0;
         } else {
             t = target_card - '0';
         }
+
+        if (p < 1 || p > 2 || t < 0 || t > game->getPlayer(p)->getBoard()->getSize()) {
+            view->invalidCommand();
+            return;
+        }
+        
         game->notify(make_unique<PlayCommand>(i - 1, p - 1, t));
     } else {
         game->notify(make_unique<PlayCommand>(i - 1));
@@ -188,6 +208,8 @@ void GameController::describe(const string& args) {
         if (minion) {
             view->inspect(*minion);
         }
+    } else {
+        view->invalidCommand();
     }
 }
 

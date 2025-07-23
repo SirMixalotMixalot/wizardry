@@ -12,6 +12,7 @@ class TextualDisplay : public View {
         void inspect(const Minion& minion) override;
         void showBoard(const Game& game) override;
         void showHand(const Hand& hand) override;
+        void invalidCommand() override;
 };
 
 #endif
