@@ -42,3 +42,6 @@
 
 # cursor rules
 .cursor/rules/
+
+# executable
+sorcery
