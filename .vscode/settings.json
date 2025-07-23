@@ -10,6 +10,7 @@
         "string": "cpp",
         "stdexcept": "cpp",
         "xhash": "cpp",
-        "unordered_map": "cpp"
-    }
+        "unordered_map": "cpp",
+        "xstring": "cpp"
+}
 }

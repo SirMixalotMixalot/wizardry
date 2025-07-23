@@ -32,15 +32,20 @@ class Player {
         void setMagic(int magic);
         void setHealth(int health);
 
+        void killMinion(int index);
+        void returnMinionToHand(int index);
+
         void drawCard();
-        void discardCard(int index);
-        Card* playCard(int index);
+        Card* discardCard(int index);
+        Card* playCard(int index, int targetPlayer = -1, char targetCard = '0'); // targetPlayer -1 means no target
 
         Minion* getMinion(int index);
         Game* getGame() const;
         Hand* getHand() const;
         Deck* getDeck() const;
         Board* getBoard() const;
+        Graveyard* getGraveyard() const;
+
         Graveyard* getGraveyard() const;
 
         void trigger(Triggers trigger);

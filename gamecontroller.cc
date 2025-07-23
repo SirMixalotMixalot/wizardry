@@ -210,7 +210,7 @@ void GameController::play(const string& args) {
             return;
         }
         
-        game->notify(make_unique<PlayCommand>(i - 1, p - 1, t));
+        game->notify(make_unique<PlayCommand>(i - 1, p, t));
     } else {
         game->notify(make_unique<PlayCommand>(i - 1));
     }

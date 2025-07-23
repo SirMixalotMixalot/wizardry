@@ -9,11 +9,17 @@
 #include "bonegolem.h"
 #include "potionseller.h"
 
+#include "unsummon.h"
+#include "raisedead.h"
+#include "banish.h"
+#include "blizzard.h"
+
 #include <stdexcept>
 #include <unordered_map>
 
 static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators() {
     static const std::unordered_map<std::string, CardFactory::CreatorFunc> table{
+        // minions
         {"Air Elemental",  [](Player* o){ return std::make_unique<AirElemental>(o); }},
         {"Earth Elemental",[](Player* o){ return std::make_unique<EarthElemental>(o); }},
         {"Fire Elemental",[](Player* o){ return std::make_unique<FireElemental>(o); }},
@@ -21,7 +27,12 @@ static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators
         {"Apprentice Summoner",[](Player* o){ return std::make_unique<ApprenticeSummoner>(o); }},
         {"Master Summoner", [](Player* o){ return std::make_unique<MasterSummoner>(o); }},
         {"Bone Golem",[](Player* o){ return std::make_unique<BoneGolem>(o); }},
-        {"Potion Seller",[](Player* o){ return std::make_unique<PotionSeller>(o); }}
+        {"Potion Seller",[](Player* o){ return std::make_unique<PotionSeller>(o); }},
+        // spells
+        {"Unsummon", [](Player* o){ return std::make_unique<Unsummon>(o); }},
+        {"Raise Dead", [](Player* o){ return std::make_unique<RaiseDead>(o); }},
+        {"Banish", [](Player* o){ return std::make_unique<Banish>(o); }},
+        {"Blizzard", [](Player* o){ return std::make_unique<Blizzard>(o); }},
     };
     return table;
 }

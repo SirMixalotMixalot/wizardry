@@ -1,0 +1,30 @@
+#include "raisedeadcommand.h"
+#include "game.h"
+#include "minion.h"
+void RaiseDeadCommand::execute(Game& game) {
+    Player* activePlayer = game.getActivePlayer();
+
+    // check if the active player has a graveyard
+    if (activePlayer->getGraveyard()->getSize() == 0) {
+        throw std::runtime_error("No cards in graveyard to raise.");
+    }
+
+    auto graveyard = activePlayer->getGraveyard();
+
+    // implictly assumes we add last card to the end of the graveyard
+    // ehhhh TODO: see if the design can be improved
+    unique_ptr<Card> card = graveyard->removeCard(graveyard->getSize() - 1);
+    if (!card) {
+        throw std::runtime_error("No minions found in graveyard.");
+    }
+
+    // cast to minion
+    Minion* minion = dynamic_cast<Minion*>(card.get());
+    if (!minion) {
+        throw std::runtime_error("Card is not a minion.");
+    }
+
+    minion->setDefense(1);
+
+    activePlayer->getBoard()->addCard(move(card));
+}
