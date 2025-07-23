@@ -16,10 +16,10 @@ class GameController {
         GameController();
         ~GameController();
     
-        void playGame(const string& initFile, const string& deck1File, const string& deck2File);
+        void playGame(const string& initFile, const string& deck1File, const string& deck2File, bool testFlag);
     
     private:
-        void processCommand(const string& command);
+        void processCommand(const string& command, bool testFlag);
         void help();
         void end();
         void start();

@@ -20,7 +20,9 @@ void Player::drawCard() {
     }
 }
 
-Card* Player::discardCard(int index) {}
+void Player::discardCard(int index) {
+    hand->removeCard(index);
+}
 
 Card* Player::playCard(int index) {
     if (index < 0 || index >= hand->getSize()) {

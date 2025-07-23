@@ -33,7 +33,7 @@ class Player {
         void setHealth(int health);
 
         void drawCard();
-        Card* discardCard(int index);
+        void discardCard(int index);
         Card* playCard(int index);
 
         Minion* getMinion(int index);
