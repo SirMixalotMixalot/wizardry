@@ -57,3 +57,7 @@ void Enchantment::setDefense(int defense) {
 void Enchantment::setActions(int actions) {
     next->setActions(actions);
 }
+
+void Enchantment::setNext(Minion* nextMinion) {
+    next = nextMinion;
+}
