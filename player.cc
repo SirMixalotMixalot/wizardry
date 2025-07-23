@@ -37,22 +37,25 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
     }
     magic -= card->getCost();
 
-    // get the cards command
-    unique_ptr<Command> command;
-    if (targetPlayer == -1) {
-        // no target player, just use the card
-        command = card->use();
-    } else {
-        // use the card with a target player and target card
-        command = card->use(targetCard, targetPlayer);
-    }
+    // only use the card if it is a spell
+    if (dynamic_cast<Spell*>(card)) {
+        // get the cards command
+        unique_ptr<Command> command;
+        if (targetPlayer == -1) {
+            // no target player, just use the card
+            command = card->use();
+        } else {
+            // use the card with a target player and target card
+            command = card->use(targetCard, targetPlayer);
+        }
 
-    // notify the game with the command
-    game->notify(move(command));
+        // notify the game with the command
+        game->notify(move(command));
+    }
     unique_ptr<Card> playedCard = hand->removeCard(index);
     Card* rawCard = playedCard.get();
-    
-    // check if the card played was not a spell
+
+    // only add the card to the board if it is not a spell
     if (!dynamic_cast<Spell*>(rawCard)) {
         board->addCard(move(playedCard));
     }
