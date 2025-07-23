@@ -48,6 +48,9 @@ class Game {
         void trigger(Triggers trigger);
 
         Player* getPlayer(int index); // player access
+private:
+        void applyEnchantment(unique_ptr<Enchantment> enchantment,int player, int minionIndex);
+
 };
 
 #endif

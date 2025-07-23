@@ -10,6 +10,7 @@ class Board : public CardCollection {
         ~Board() override = default;
         
         void trigger(Triggers trigger);
+        void applyEnchantment(std::unique_ptr<Enchantment> enchantment, int minionIndex);
 };
 
 #endif

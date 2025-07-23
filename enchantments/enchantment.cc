@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Enchantment::Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, Minion* next) : Minion(name, owner, description, cost, 0, 0), attackModifier(attackModifier), defenseModifier(defenseModifier), next(next) {}
+Enchantment::Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, unique_ptr<Minion> next) : Minion(name, owner, description, cost, 0, 0), attackModifier(attackModifier), defenseModifier(defenseModifier), next(std::move(next)) {}
 
 Enchantment::~Enchantment() = default;
 
@@ -58,6 +58,6 @@ void Enchantment::setActions(int actions) {
     next->setActions(actions);
 }
 
-void Enchantment::setNext(Minion* nextMinion) {
-    next = nextMinion;
+void Enchantment::setNext(unique_ptr<Minion> nextMinion) {
+    next = std::move(nextMinion);
 }

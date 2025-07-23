@@ -1,6 +1,7 @@
 #include "player.h"
 #include "minion.h"
 #include <iostream>
+#include "enchantment.h"
 #include "spell.h"
 #include <stdexcept>
 #include <memory>
@@ -55,6 +56,7 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
     magic -= card->getCost();
 
     unique_ptr<Card> playedCard = hand->removeCard(index);
+
     Card* rawCard = playedCard.get();
 
     // only add the card to the board if it is not a spell

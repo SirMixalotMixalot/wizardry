@@ -1,6 +1,9 @@
 #include "game.h"
 #include "command.h"
 #include "minion.h"
+#include "player.h"
+#include "enchantment.h"
+#include <memory>
 #include <iostream>
 
 using namespace std;
@@ -107,3 +110,9 @@ void Game::notify(unique_ptr<Command> command) {
 }
 
 void Game::trigger(Triggers trigger) {}
+
+void Game::applyEnchantment(std::unique_ptr<Enchantment> ench, int player, int idx) {
+    Player* targetPlayer = getPlayer(player);
+    targetPlayer->getBoard()->applyEnchantment(std::move(ench), idx);
+}
+

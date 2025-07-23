@@ -10,9 +10,9 @@ class Enchantment : public Minion {
     string defenseModifier;
 
     protected:
-        Minion* next;
+        unique_ptr<Minion> next;
     public:
-        Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, Minion* next);
+        Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, unique_ptr<Minion> next);
         ~Enchantment() override = 0;
 
         string getAttackModifier() const;
@@ -33,7 +33,7 @@ class Enchantment : public Minion {
         void setDefense(int defense) override; // call next's setDefense()
         void setActions(int actions) override; // call next's setActions()
 
-        void setNext(Minion* nextMinion);
+        void setNext(unique_ptr<Minion> nextMinion);
 };
 
 #endif

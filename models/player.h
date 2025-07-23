@@ -47,6 +47,7 @@ class Player {
         Graveyard* getGraveyard() const;
 
         void trigger(Triggers trigger);
+
 };
 
 #endif

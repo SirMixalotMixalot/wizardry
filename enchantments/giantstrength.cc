@@ -1,6 +1,6 @@
 #include "giantstrength.h"
 
-GiantStrength::GiantStrength(Player* owner, Minion* next) : Enchantment("Giant Strength", owner, "", 1, "+2", "+2", next) {}
+GiantStrength::GiantStrength(Player* owner, unique_ptr<Minion> next) : Enchantment("Giant Strength", owner, "", 1, "+2", "+2", move(next)) {}
 
 int GiantStrength::getAttack() const {
     return next->getAttack() + 2;
