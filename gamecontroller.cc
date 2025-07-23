@@ -113,7 +113,11 @@ void GameController::processCommand(const string& command, bool testFlag) {
     } else if (cmd == "play") {
         string args;
         getline(iss, args);
-        play(args);
+        try {
+            play(args);
+        } catch (const std::exception& e) {
+            cout << "Cannot play card: " << e.what() << endl;
+        }
     } else if (cmd == "use") {
         string args;
         getline(iss, args);

@@ -35,7 +35,6 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
     if (magic < card->getCost()) {
         return nullptr;
     }
-    magic -= card->getCost();
 
     // only use the card if it is a spell
     if (dynamic_cast<Spell*>(card)) {
@@ -52,6 +51,9 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
         // notify the game with the command
         game->notify(move(command));
     }
+    // incase the spell fails, we only change the magic after the command is executed
+    magic -= card->getCost();
+
     unique_ptr<Card> playedCard = hand->removeCard(index);
     Card* rawCard = playedCard.get();
 
