@@ -1,6 +1,6 @@
 #ifndef NOVICEPYROMANCER_H
 #define NOVICEPYROMANCER_H
-#include "../minion.h"
+#include "minion.h"
 
 class NovicePyromancer : public Minion {
     public:

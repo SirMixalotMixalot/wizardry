@@ -1,7 +1,7 @@
 #ifndef AIRELEMENTAL_H
 #define AIRELEMENTAL_H
 
-#include "../minion.h"
+#include "minion.h"
 
 class AirElemental : public Minion {
     public:

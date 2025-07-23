@@ -1,6 +1,6 @@
 #ifndef BONEGolem_H
 #define BONEGolem_H
-#include "../minion.h"
+#include "minion.h"
 class BoneGolem : public Minion {
     public:
         BoneGolem(Player* owner);

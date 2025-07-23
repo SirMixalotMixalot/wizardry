@@ -1,7 +1,7 @@
 #ifndef GIANT_STRENGTH_H
 #define GIANT_STRENGTH_H
 
-#include "../enchantment.h"
+#include "enchantment.h"
 
 class GiantStrength : public Enchantment {
     public:
