@@ -77,4 +77,3 @@ void TextualDisplay::showHand(const Hand& hand) {
 void TextualDisplay::invalidCommand() {
     cerr << "Invalid command" << endl;
 }
-
