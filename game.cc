@@ -62,12 +62,25 @@ void Game::attack(int index) {
     Minion* minion = activePlayer->getMinion(index);
     if (minion != nullptr && minion->getActions() > 0) {
         inactivePlayer->setHealth(inactivePlayer->getHealth() - minion->getAttack());
-        cout << inactivePlayer->getName() << "'s health is now " << inactivePlayer->getHealth() << endl;
         minion->setActions(minion->getActions() - 1);
     }
 }
 
-void Game::attack(int index, int targetIndex) {}
+void Game::attack(int index, int targetIndex) {
+    Minion* minion = activePlayer->getMinion(index);
+    Minion* target = inactivePlayer->getMinion(targetIndex);
+    if (minion != nullptr && target != nullptr && minion->getActions() > 0) {
+        minion->setActions(minion->getActions() - 1);
+        target->setDefense(target->getDefense() - minion->getAttack());
+        minion->setDefense(minion->getDefense() - target->getAttack());
+        if (target->getDefense() <= 0) {
+            inactivePlayer->getGraveyard()->addCard(inactivePlayer->getBoard()->removeCard(targetIndex));
+        }
+        if (minion->getDefense() <= 0) {
+            activePlayer->getGraveyard()->addCard(inactivePlayer->getBoard()->removeCard(index));
+        }
+    } 
+}
 
 void Game::playCard(int index) {
     activePlayer->playCard(index);

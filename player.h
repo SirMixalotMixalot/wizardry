@@ -41,6 +41,7 @@ class Player {
         Hand* getHand() const;
         Deck* getDeck() const;
         Board* getBoard() const;
+        Graveyard* getGraveyard() const;
 
         void trigger(Triggers trigger);
 };

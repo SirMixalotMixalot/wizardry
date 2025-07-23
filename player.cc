@@ -62,6 +62,10 @@ Board* Player::getBoard() const {
     return board.get();
 }
 
+Graveyard* Player::getGraveyard() const {
+    return graveyard.get();
+}
+
 void Player::trigger(Triggers trigger) {}
 
 int Player::getMagic() const {
