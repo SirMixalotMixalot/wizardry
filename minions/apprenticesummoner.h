@@ -1,7 +1,7 @@
 #ifndef APPRENTICESUMMONER_H
 #define APPRENTICESUMMONER_H
 
-#include "../minion.h"
+#include "minion.h"
 
 class ApprenticeSummoner : public Minion {
     public:

@@ -1,7 +1,7 @@
 #ifndef MAGIC_FATIGUE_H
 #define MAGIC_FATIGUE_H
 
-#include "../enchantment.h"
+#include "enchantment.h"
 
 class MagicFatigue : public Enchantment {
     public:

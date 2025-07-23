@@ -1,7 +1,7 @@
 #ifndef MASTERSUMMONER_H
 #define MASTERSUMMONER_H
 
-#include "../minion.h"
+#include "minion.h"
 
 class MasterSummoner : public Minion {
     public:

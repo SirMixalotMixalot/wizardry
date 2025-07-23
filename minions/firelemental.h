@@ -1,7 +1,7 @@
 #ifndef FIRELEMENTAL_H
 #define FIRELEMENTAL_H
 
-#include "../minion.h"
+#include "minion.h"
 class FireElemental : public Minion {
     public:
         FireElemental(Player* owner);

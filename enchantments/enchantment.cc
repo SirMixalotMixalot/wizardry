@@ -1,5 +1,7 @@
 #include "enchantment.h"
 
+using namespace std;
+
 Enchantment::Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, Minion* next) : Minion(name, owner, description, cost, 0, 0), attackModifier(attackModifier), defenseModifier(defenseModifier), next(next) {}
 
 Enchantment::~Enchantment() = default;
@@ -12,12 +14,12 @@ string Enchantment::getDefenseModifier() const {
     return defenseModifier;
 }
 
-void Enchantment::use() {
-    next->use();
+unique_ptr<Command> Enchantment::use() {
+    return next->use();
 }
 
-void Enchantment::use(int index, char target) {
-    next->use(index, target);
+unique_ptr<Command> Enchantment::use(int index, int target) {
+    return next->use(index, target);
 }
 
 void Enchantment::restoreActions() {
