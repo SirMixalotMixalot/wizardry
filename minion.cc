@@ -17,6 +17,10 @@ int Minion::getActions() const {
     return actions;
 }
 
+int Minion::getActivatedAbilityCost() const {
+    // NOTE: IMPLEMENTATION NEEDED
+}
+
 void Minion::setAttack(int attack) {
     this->attack = attack;
 }
