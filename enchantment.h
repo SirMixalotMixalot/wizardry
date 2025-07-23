@@ -2,7 +2,9 @@
 #define ENCHANTMENT_H
 
 #include "minion.h"
-
+#include "command.h"
+#include <memory>
+using namespace std;
 class Enchantment : public Minion {
     string attackModifier;
     string defenseModifier;
@@ -16,8 +18,8 @@ class Enchantment : public Minion {
         string getAttackModifier() const;
         string getDefenseModifier() const;
 
-        void use() override; // call next's use()
-        void use(int index, char target) override; // call next's use(int, char)
+        unique_ptr<Command> use() override; // call next's use()
+        unique_ptr<Command> use(int index, int target) override; // call next's use(int, char)
 
         void restoreActions() override; // call next's restoreActions()
 

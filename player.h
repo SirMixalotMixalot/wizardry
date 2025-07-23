@@ -36,7 +36,7 @@ class Player {
         void returnMinionToHand(int index);
 
         void drawCard();
-        Card* discardCard(int index);
+        unique_ptr<Card> discardCard(int index);
         Card* playCard(int index, int targetPlayer = -1, int targetCard = 0); // targetPlayer -1 means no target
 
         Minion* getMinion(int index);
@@ -44,8 +44,6 @@ class Player {
         Hand* getHand() const;
         Deck* getDeck() const;
         Board* getBoard() const;
-        Graveyard* getGraveyard() const;
-
         Graveyard* getGraveyard() const;
 
         void trigger(Triggers trigger);

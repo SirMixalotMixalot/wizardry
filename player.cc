@@ -22,8 +22,8 @@ void Player::drawCard() {
     }
 }
 
-void Player::discardCard(int index) {
-    hand->removeCard(index);
+unique_ptr<Card> Player::discardCard(int index) {
+    return hand->removeCard(index);
 }
 
 Card* Player::playCard(int index, int targetPlayer, int targetCard) {
@@ -131,8 +131,4 @@ void Player::returnMinionToHand(int index) {
     if (card) {
         hand->addCard(move(card));
     }
-}
-
-Graveyard* Player::getGraveyard() const {
-    return graveyard.get();
 }
