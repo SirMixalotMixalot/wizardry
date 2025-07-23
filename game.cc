@@ -88,15 +88,7 @@ void Game::playCard(int index) {
     activePlayer->playCard(index);
 }
 
-void Game::playCard(int index, int targetPlayer, char targetCard) {
-    if (targetPlayer < 1 || targetPlayer > 2) {
-        throw invalid_argument("Invalid target player index. Use 1 or 2.");
-    }
-    
-    if (targetCard != 'r' && (targetCard < '0' || targetCard > '4')) {
-        throw invalid_argument("Invalid target card. Use 'r' for ritual or a digit for minion index.");
-    }
-
+void Game::playCard(int index, int targetPlayer, int targetCard) {
     activePlayer->playCard(index, targetPlayer, targetCard);
 }
 

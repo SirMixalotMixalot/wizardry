@@ -18,7 +18,7 @@ class Minion : public Card {
         virtual bool canUseAbilities() const = 0;
 
         unique_ptr<Command> use() override; // activated ability
-        unique_ptr<Command> use(int index, char target) override;
+        unique_ptr<Command> use(int index, int target) override;
 
         void restoreActions();
 

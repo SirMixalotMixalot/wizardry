@@ -199,10 +199,17 @@ void GameController::play(const string& args) {
     }
 
     if (iss >> p && iss >> target_card) {
+        if (p < 1 || p > 2) {
+            cout << "Invalid player index. Use 1 or 2." << endl;
+            return;
+        }
         if (target_card == 'r') {
-            t = 0;
+            t = -1; // ritual
+        } else if (target_card >= '0' && target_card <= '4') {
+            t = target_card - '0'; // convert char to int
         } else {
-            t = target_card - '0';
+            cout << "Invalid target card. Use 'r' for ritual or a digit for minion index." << endl;
+            return;
         }
 
         if (p < 1 || p > 2 || t < 0 || t > game->getPlayer(p)->getBoard()->getSize()) {

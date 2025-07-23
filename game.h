@@ -30,7 +30,13 @@ class Game {
         void attack(int index); // minion to player
         void attack(int index, int targetIndex); // minion to minion
         void playCard(int index); // no target
-        void playCard(int index, int targetPlayer, char targetCard); // target player and card
+        /*
+            * Play a card from hand.
+            * @param index Index of the card in hand.
+            * @param targetPlayer Target player index (-1 for no target).
+            * @param targetCard Target card index (0-4 for minion, -1 for ritual).
+        */
+        void playCard(int index, int targetPlayer, int targetCard); // target player and card
         void useMinion(int index); // no target
         void useMinion(int index, int targetPlayer, char targetCard); // target player and card
         Minion* inspectMinion(int index);

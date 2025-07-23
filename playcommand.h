@@ -11,7 +11,7 @@ class PlayCommand : public Command {
     int targetIndex;
 
     public:
-        PlayCommand(int cardIndex, int playerIndex = -1, int targetIndex = 0);
+        PlayCommand(int cardIndex, int playerIndex = -1, int targetIndex = -1);
         void execute(Game& game) override;
 };
 
