@@ -79,7 +79,7 @@ void Game::attack(int index, int targetIndex) {
             inactivePlayer->getGraveyard()->addCard(inactivePlayer->getBoard()->removeCard(targetIndex));
         }
         if (minion->getDefense() <= 0) {
-            activePlayer->getGraveyard()->addCard(inactivePlayer->getBoard()->removeCard(index));
+            activePlayer->getGraveyard()->addCard(activePlayer->getBoard()->removeCard(index));
         }
     } 
 }
