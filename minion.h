@@ -12,19 +12,19 @@ class Minion : public Card {
         Minion(string name, Player* owner, string description, int cost, int attack, int defense);
         ~Minion() override = default;
 
-        int getAttack() const;
-        int getDefense() const;
-        int getActions() const;
+        virtual int getAttack() const;
+        virtual int getDefense() const;
+        virtual int getActions() const;
         virtual bool canUseAbilities() const = 0;
 
         unique_ptr<Command> use() override; // activated ability
         unique_ptr<Command> use(int index, int target) override;
 
-        void restoreActions();
+        virtual void restoreActions();
 
-        void setAttack(int attack);
-        void setDefense(int defense);
-        void setActions(int actions);
+        virtual void setAttack(int attack);
+        virtual void setDefense(int defense);
+        virtual void setActions(int actions);
 };
 
 #endif
