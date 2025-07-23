@@ -1,6 +1,7 @@
 #include "player.h"
 #include "minion.h"
 #include <iostream>
+#include "spell.h"
 #include <stdexcept>
 #include <memory>
 using namespace std;
@@ -50,7 +51,11 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
     game->notify(move(command));
     unique_ptr<Card> playedCard = hand->removeCard(index);
     Card* rawCard = playedCard.get();
-    board->addCard(move(playedCard));
+    
+    // check if the card played was not a spell
+    if (!dynamic_cast<Spell*>(rawCard)) {
+        board->addCard(move(playedCard));
+    }
     return rawCard;
 }
 
