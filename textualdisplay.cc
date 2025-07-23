@@ -74,6 +74,3 @@ void TextualDisplay::showHand(const Hand& hand) {
         cout << "No cards in hand" << endl;
     }
 }
-
-
-
