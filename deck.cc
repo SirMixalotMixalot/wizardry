@@ -4,6 +4,7 @@
 #include <iostream>
 #include "services/card_factory.h"
 #include <memory>
+
 using namespace std;
 
 Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {

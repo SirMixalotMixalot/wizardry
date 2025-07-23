@@ -19,7 +19,7 @@ GameController::~GameController() = default;
 
 // play game
 
-void GameController::playGame(const string& initFile, const string& deck1File, const string& deck2File) {
+void GameController::playGame(const string& initFile, const string& deck1File, const string& deck2File, bool testFlag) {
     string name1;
     string name2;
     
@@ -38,6 +38,11 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
 
         game = make_unique<Game>(name1, name2, deck1File, deck2File);
 
+        if (!testFlag) {
+            game->getActivePlayer()->getDeck()->shuffle();
+            game->getInactivePlayer()->getDeck()->shuffle();
+        }
+
         start();
         
         // read file line by line
@@ -45,7 +50,7 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         while (getline(file, line)) {
             if (!line.empty()) {
                 // process command
-                processCommand(line);
+                processCommand(line, testFlag);
                 if (line == "quit") {
                     return;
                 }
@@ -68,14 +73,14 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         getline(cin, command);
         
         // process command
-        processCommand(command);
+        processCommand(command, testFlag);
         if (command == "quit") {
             return;
         }
     }
 }
 
-void GameController::processCommand(const string& command) {
+void GameController::processCommand(const string& command, bool testFlag) {
     // split command into tokens
     istringstream iss(command);
     string cmd;
@@ -88,11 +93,19 @@ void GameController::processCommand(const string& command) {
     } else if (cmd == "quit") {
         quit();
     } else if (cmd == "draw") {
-        draw();
+        if (testFlag) {
+            draw();
+        } else {
+            view->invalidCommand();
+        }
     } else if (cmd == "discard") {
         string args;
         getline(iss, args);
-        discard(args);
+        if (testFlag) {
+            discard(args);
+        } else {
+            view->invalidCommand();
+        }
     } else if (cmd == "attack") {
         string args;
         getline(iss, args);
@@ -135,11 +148,19 @@ void GameController::quit() {
 }
 
 void GameController::draw() {
-    cout << "draw" << endl;
+    game->draw();
 }
 
 void GameController::discard(const string& args) {
-    cout << "discard" << args << endl;
+    istringstream iss(args);
+    int i;
+    iss >> i;
+    if (i < 1 || i > game->getActivePlayer()->getHand()->getSize()) {
+        view->invalidCommand();
+        return;
+    }
+
+    game->discard(i - 1);
 }
 
 void GameController::attack(const string& args) {

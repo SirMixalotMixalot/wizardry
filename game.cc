@@ -53,10 +53,12 @@ void Game::endTurn() {
 }
 
 void Game::draw() {
-    // not sure if we need this one
+    activePlayer->drawCard();
 }
 
-void Game::discard(int index) {}
+void Game::discard(int index) {
+    activePlayer->discardCard(index);
+}
 
 void Game::attack(int index) {
     Minion* minion = activePlayer->getMinion(index);
