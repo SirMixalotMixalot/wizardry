@@ -24,5 +24,3 @@ int Card::getCost() const {
 }
 
 void Card::trigger(Triggers trigger) {}
-
-void Card::notifyGame() {}

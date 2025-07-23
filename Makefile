@@ -1,9 +1,9 @@
 CXX       := g++
 CXXFLAGS  := -std=c++14 -Wall -g
-CPPFLAGS  := -MMD -MP -Iminions -Iservices
+CPPFLAGS  := -MMD -MP -Iminions -Iservices -Ispells -I. -Icommands
 EXEC      := sorcery
 
-SRCS := $(wildcard *.cc minions/*.cc services/*.cc)
+SRCS := $(wildcard *.cc minions/*.cc services/*.cc spells/*.cc commands/*.cc)
 OBJS := $(SRCS:.cc=.o)
 DEPS := $(OBJS:.o=.d)
 

@@ -3,6 +3,7 @@
 
 #include "enums.h"
 #include <string>
+#include <memory>
 
 using namespace std;
 
@@ -21,13 +22,9 @@ class Card {
         string getDescription() const;
         int getCost() const;
     
-        virtual void use() = 0;
-        virtual void use(int index, char target) = 0;
+        virtual unique_ptr<Command> use() = 0;
+        virtual unique_ptr<Command> use(int player, char targetCard) = 0;
         void trigger(Triggers trigger);
-    
-    private:
-        void notifyGame();
-
 };
 
 #endif

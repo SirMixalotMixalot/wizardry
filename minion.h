@@ -2,7 +2,7 @@
 #define MINION_H
 
 #include "card.h"
-
+#include "command.h"
 class Minion : public Card {
     int attack;
     int defense;
@@ -17,8 +17,8 @@ class Minion : public Card {
         int getActions() const;
         virtual bool canUseAbilities() const = 0;
 
-        void use() override; // activated ability
-        void use(int index, char target) override;
+        unique_ptr<Command> use() override; // activated ability
+        unique_ptr<Command> use(int index, char target) override;
 
         void restoreActions();
 

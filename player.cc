@@ -1,7 +1,8 @@
 #include "player.h"
 #include "minion.h"
 #include <iostream>
-
+#include <stdexcept>
+#include <memory>
 using namespace std;
 
 Player::Player(const string& name, const string& deckFile, Game* game) : name(name), magic(3), health(20), game(game) {
@@ -24,7 +25,7 @@ void Player::discardCard(int index) {
     hand->removeCard(index);
 }
 
-Card* Player::playCard(int index) {
+Card* Player::playCard(int index, int targetPlayer, char targetCard) {
     if (index < 0 || index >= hand->getSize()) {
         return nullptr;
     }
@@ -33,8 +34,20 @@ Card* Player::playCard(int index) {
     if (magic < card->getCost()) {
         return nullptr;
     }
-
     magic -= card->getCost();
+
+    // get the cards command
+    unique_ptr<Command> command;
+    if (targetPlayer == -1) {
+        // no target player, just use the card
+        command = card->use();
+    } else {
+        // use the card with a target player and target card
+        command = card->use(targetCard, targetPlayer);
+    }
+
+    // notify the game with the command
+    game->notify(move(command));
     unique_ptr<Card> playedCard = hand->removeCard(index);
     Card* rawCard = playedCard.get();
     board->addCard(move(playedCard));
@@ -86,4 +99,30 @@ int Player::getHealth() const {
 
 void Player::setHealth(int health) {
     this->health = health;
+}
+
+void Player::killMinion(int index) {
+    if (index < 0 || index >= board->getSize()) {
+        throw std::out_of_range("Invalid minion index");
+    }
+    
+    auto card = board->removeCard(index);
+    if (card) {
+        graveyard->addCard(move(card));
+    }
+}
+
+void Player::returnMinionToHand(int index) {
+    if (index < 0 || index >= board->getSize()) {
+        throw std::out_of_range("Invalid minion index");
+    }
+    
+    auto card = board->removeCard(index);
+    if (card) {
+        hand->addCard(move(card));
+    }
+}
+
+Graveyard* Player::getGraveyard() const {
+    return graveyard.get();
 }

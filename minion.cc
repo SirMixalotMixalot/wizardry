@@ -33,6 +33,6 @@ void Minion::restoreActions() {
     actions = 1;
 }
 
-void Minion::use() {}
+unique_ptr<Command> Minion::use() {}
 
-void Minion::use(int index, char target) {}
+unique_ptr<Command> Minion::use(int index, char target) {}
