@@ -8,15 +8,27 @@
 using namespace std;
 
 void TextualDisplay::displayTemplate(const card_template_t& templateLines) const {
-    int lineNumber = 0;
     for (const auto& line : templateLines) {
-        cout << line;
-        if (lineNumber < templateLines.size() - 1) {
-            cout << endl;
-        }
-        lineNumber++;
+        cout << line << endl;
     }
 }
+void TextualDisplay::displayTemplates(const std::vector<card_template_t>& cards) const {
+    const auto MAX_PER_ROW = 5;
+
+    for (auto start = 0; start < cards.size(); start += MAX_PER_ROW) {
+        auto end = cards.size() <= start + MAX_PER_ROW ? cards.size() : start + MAX_PER_ROW;
+        auto nLines = cards[start].size();
+
+        for (auto line = 0; line < nLines; ++line) {
+            for (auto idx = start; idx < end; ++idx) {
+                std::cout << cards[idx][line];
+            }
+            std::cout << '\n';
+        }
+        std::cout << '\n';
+    }
+}
+
 
 void TextualDisplay::help() {
     cout << "Commands:" << endl;
@@ -58,16 +70,9 @@ void TextualDisplay::inspect(const Minion& minion) {
     // print nextMinion
     auto card = display_minion_no_ability(nextMinion->getName(), nextMinion->getCost(), nextMinion->getAttack(), nextMinion->getDefense());
     displayTemplate(card);
-    cout << endl;
-    // print all enchantments in reverse order
-    int printedEnchantments = 0;
-    for (auto it = enchantmentLines.rbegin(); it != enchantmentLines.rend(); ++it) {
-        displayTemplate(*it);
-        printedEnchantments++;
-        if (printedEnchantments > 0 && printedEnchantments % 5 == 0) {
-            cout << endl;
-        }
-    }
+    // print enchantments in reverse order
+    std::vector<card_template_t> reversed(enchantmentLines.rbegin(), enchantmentLines.rend());
+    displayTemplates(reversed);
 
 }
 
@@ -110,28 +115,25 @@ void TextualDisplay::showBoard(const Game& game) {
 }
  
 void TextualDisplay::showHand(const Hand& hand) {
-    int printedCards = 0;
+    std::vector<card_template_t> cards;
     for (int i = 0; i < hand.getSize(); i++) {
-        if (auto minion = dynamic_cast<const Minion*>(hand.getCard(i))) {
-            auto card = display_minion_no_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense());
-            displayTemplate(card);
-        } else if (auto enchantment = dynamic_cast<const Enchantment*>(hand.getCard(i))) {
+        if (auto enchantment = dynamic_cast<const Enchantment*>(hand.getCard(i))) {
             auto enchantmentTemplate = displaEnchantment(enchantment);
-            displayTemplate(enchantmentTemplate);
+            cards.push_back(enchantmentTemplate);
         }
+        else if (auto minion = dynamic_cast<const Minion*>(hand.getCard(i))) {
+            auto card = display_minion_no_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense());
+            cards.push_back(card);
+        } 
         else if (auto spell = dynamic_cast<const Spell*>(hand.getCard(i))) {
             auto card = display_spell(spell->getName(), spell->getCost(), spell->getDescription());
-            displayTemplate(card);
+            cards.push_back(card);
         } 
         else {
             cout << "Unprintable type in hand." << endl;
         }
-        printedCards++;
-
-        if (printedCards > 0 && printedCards % 5 == 0) {
-            cout << endl;
-        }
     }
+    displayTemplates(cards);
     if (hand.getSize() == 0) {
         cout << "No cards in hand" << endl;
     }
