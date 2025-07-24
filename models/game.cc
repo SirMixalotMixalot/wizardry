@@ -78,11 +78,12 @@ void Game::attack(int index, int targetIndex) {
         minion->setActions(minion->getActions() - 1);
         target->setDefense(target->getDefense() - minion->getAttack());
         minion->setDefense(minion->getDefense() - target->getAttack());
-        if (target->getDefense() <= 0) {
-            inactivePlayer->getGraveyard()->addCard(inactivePlayer->getBoard()->removeCard(targetIndex));
-        }
+        // apnap order
         if (minion->getDefense() <= 0) {
-            activePlayer->getGraveyard()->addCard(activePlayer->getBoard()->removeCard(index));
+            activePlayer->killMinion(index);
+        }
+        if (target->getDefense() <= 0) {
+            inactivePlayer->killMinion(targetIndex);
         }
     } 
 }

@@ -56,11 +56,18 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
     magic -= card->getCost();
 
     unique_ptr<Card> playedCard = hand->removeCard(index);
-
     Card* rawCard = playedCard.get();
 
+    if (dynamic_cast<Enchantment*>(rawCard)) 
+    {
+        std::unique_ptr<Enchantment> ench{ static_cast<Enchantment*>(playedCard.release()) };
+
+        game->applyEnchantment(std::move(ench), targetPlayer, targetCard);
+        return nullptr; // the card is consumed; don't return/use raw anymore
+    }
+
     // only add the card to the board if it is not a spell
-    if (!dynamic_cast<Spell*>(rawCard)) {
+    if (dynamic_cast<Minion*>(rawCard)) {
         board->addCard(move(playedCard));
     }
     return rawCard;
