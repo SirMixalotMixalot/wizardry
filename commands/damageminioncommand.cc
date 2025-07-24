@@ -2,7 +2,7 @@
 #include "game.h"
 #include "minion.h"
 
-DamageMinionCommand::DamageMinionCommand(int target, bool player1) : targetCard(target), damagePlayer1(player1) {}
+DamageMinionCommand::DamageMinionCommand(int target, bool player1, int damage) : targetCard(target), damagePlayer1(player1), damage(damage) {}
 
 void DamageMinionCommand::execute(Game& game) {
     Player* targetPlayer = damagePlayer1 ? game.getPlayer(1) : game.getPlayer(2);
@@ -17,7 +17,7 @@ void DamageMinionCommand::execute(Game& game) {
     }
 
     // Apply damage to the minion, kill if defense is less than or equal to 0
-    minion->setDefense(minion->getDefense() - 1);
+    minion->setDefense(minion->getDefense() - damage);
     if (minion->getDefense() <= 0) {
         targetPlayer->killMinion(targetCard);
     }
