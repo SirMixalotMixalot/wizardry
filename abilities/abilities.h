@@ -4,6 +4,7 @@
 #include "command.h"
 #include <string>
 #include <memory>
+#include <stdexcept>
 
 using namespace std;
 
