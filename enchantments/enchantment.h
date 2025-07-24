@@ -34,6 +34,7 @@ class Enchantment : public Minion {
         void setActions(int actions) override; // call next's setActions()
 
         virtual void setNext(unique_ptr<Minion> nextMinion);
+        const Minion* getNext() const;
 };
 
 #endif
