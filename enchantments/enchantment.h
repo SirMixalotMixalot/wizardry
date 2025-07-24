@@ -33,7 +33,7 @@ class Enchantment : public Minion {
         void setDefense(int defense) override; // call next's setDefense()
         void setActions(int actions) override; // call next's setActions()
 
-        void setNext(unique_ptr<Minion> nextMinion);
+        virtual void setNext(unique_ptr<Minion> nextMinion);
 };
 
 #endif
