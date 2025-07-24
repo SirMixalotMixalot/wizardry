@@ -1,8 +1,22 @@
 #include "textualdisplay.h"
-
+#include "enchantment.h"
+#include "spell.h"
+#include "minion.h"
 #include <iostream>
+#include "ascii_graphics.h"
 
 using namespace std;
+
+void TextualDisplay::displayTemplate(const card_template_t& templateLines) const {
+    int lineNumber = 0;
+    for (const auto& line : templateLines) {
+        cout << line;
+        if (lineNumber < templateLines.size() - 1) {
+            cout << endl;
+        }
+        lineNumber++;
+    }
+}
 
 void TextualDisplay::help() {
     cout << "Commands:" << endl;
@@ -18,13 +32,43 @@ void TextualDisplay::help() {
     cout << "   board -- Describe all cards on the board" << endl;
 }
 
+
 void TextualDisplay::inspect(const Minion& minion) {
-    cout << "Minion: " << minion.getName() << endl;
-    cout << "Description: " << minion.getDescription() << endl;
-    cout << "Cost: " << minion.getCost() << endl;
-    cout << "Attack: " << minion.getAttack() << endl;
-    cout << "Defense: " << minion.getDefense() << endl;
-    cout << "Actions: " << minion.getActions() << endl;
+
+    const Enchantment* current = dynamic_cast<const Enchantment*>(&minion);
+    if (!current) {
+        // print minion normally
+        auto card = display_minion_no_ability(minion.getName(), minion.getCost(), minion.getAttack(), minion.getDefense());
+        displayTemplate(card);
+        return;
+    }
+    vector<card_template_t> enchantmentLines;
+    const Minion* nextMinion = current->getNext();
+    while (current) {
+
+        // create current enchantment template and then display it
+        card_template_t enchantmentTemplate = displaEnchantment(current);
+        enchantmentLines.push_back(enchantmentTemplate);
+        // move to the next enchantment
+        nextMinion =  current->getNext();
+        current = dynamic_cast<const Enchantment*>(nextMinion);
+        
+    }
+
+    // print nextMinion
+    auto card = display_minion_no_ability(nextMinion->getName(), nextMinion->getCost(), nextMinion->getAttack(), nextMinion->getDefense());
+    displayTemplate(card);
+    cout << endl;
+    // print all enchantments in reverse order
+    int printedEnchantments = 0;
+    for (auto it = enchantmentLines.rbegin(); it != enchantmentLines.rend(); ++it) {
+        displayTemplate(*it);
+        printedEnchantments++;
+        if (printedEnchantments > 0 && printedEnchantments % 5 == 0) {
+            cout << endl;
+        }
+    }
+
 }
 
 void TextualDisplay::showBoard(const Game& game) {
@@ -66,8 +110,27 @@ void TextualDisplay::showBoard(const Game& game) {
 }
  
 void TextualDisplay::showHand(const Hand& hand) {
+    int printedCards = 0;
     for (int i = 0; i < hand.getSize(); i++) {
-        cout << "Card " << i + 1 << ": " << hand.getCard(i)->getName() << endl;
+        if (auto minion = dynamic_cast<const Minion*>(hand.getCard(i))) {
+            auto card = display_minion_no_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense());
+            displayTemplate(card);
+        } else if (auto enchantment = dynamic_cast<const Enchantment*>(hand.getCard(i))) {
+            auto enchantmentTemplate = displaEnchantment(enchantment);
+            displayTemplate(enchantmentTemplate);
+        }
+        else if (auto spell = dynamic_cast<const Spell*>(hand.getCard(i))) {
+            auto card = display_spell(spell->getName(), spell->getCost(), spell->getDescription());
+            displayTemplate(card);
+        } 
+        else {
+            cout << "Unprintable type in hand." << endl;
+        }
+        printedCards++;
+
+        if (printedCards > 0 && printedCards % 5 == 0) {
+            cout << endl;
+        }
     }
     if (hand.getSize() == 0) {
         cout << "No cards in hand" << endl;
@@ -76,4 +139,17 @@ void TextualDisplay::showHand(const Hand& hand) {
 
 void TextualDisplay::invalidCommand() {
     cerr << "Invalid command" << endl;
+}
+
+card_template_t TextualDisplay::displaEnchantment(const Enchantment* enchantment) const {
+    if (enchantment->getAttackModifier().empty() && enchantment->getDefenseModifier().empty()) {
+        return display_enchantment(enchantment->getName(), enchantment->getCost(), enchantment->getDescription());
+    } else {
+        return display_enchantment_attack_defence(
+            enchantment->getName(),
+            enchantment->getCost(),
+            enchantment->getDescription(),
+            enchantment->getAttackModifier(),
+            enchantment->getDefenseModifier());
+    }
 }

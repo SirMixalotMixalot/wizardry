@@ -10,6 +10,9 @@ using namespace std;
 Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {
     cards.clear();
     ifstream file(deckFile);
+    if (!file.is_open()) {
+        throw invalid_argument("Could not open deck file: " + deckFile);
+    }
     string line;
     while (getline(file, line)) {
         try {
