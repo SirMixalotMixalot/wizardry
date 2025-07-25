@@ -38,7 +38,7 @@ class Game {
         */
         void playCard(int index, int targetPlayer, int targetCard); // target player and card
         void useMinion(int index); // no target
-        void useMinion(int index, int targetPlayer, char targetCard); // target player and card
+        void useMinion(int index, int targetPlayer, int targetCard); // target player and card
         Minion* inspectMinion(int index);
 
         Hand* getHand(); // for display
