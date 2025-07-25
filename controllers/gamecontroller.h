@@ -32,6 +32,7 @@ class GameController {
         void describe(const string& args);
         void hand();
         void board();
+        bool checkGameOver();
 };
 
 #endif

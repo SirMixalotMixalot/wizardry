@@ -19,7 +19,6 @@ unique_ptr<Card> CardCollection::removeCard(int index) {
     return card;
 }
 
-
 Card* CardCollection::getCard(int index) const {
     if (index < 0 || index >= cards.size()) {
         return nullptr;

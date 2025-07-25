@@ -5,10 +5,10 @@
 
 class Haste : public Enchantment {
     public:
-        Haste(Player* owner, Minion* next);
+        Haste(Player* owner, unique_ptr<Minion> next);
         ~Haste() override = default;
-
-        int getActions() const override; // Add 1 to next's actions
+        void restoreActions() override;
+        void setNext(unique_ptr<Minion> nextMinion) override;
 };
 
 #endif

@@ -1,6 +1,9 @@
 #include "game.h"
 #include "command.h"
 #include "minion.h"
+#include "player.h"
+#include "enchantment.h"
+#include <memory>
 #include <iostream>
 
 using namespace std;
@@ -75,11 +78,12 @@ void Game::attack(int index, int targetIndex) {
         minion->setActions(minion->getActions() - 1);
         target->setDefense(target->getDefense() - minion->getAttack());
         minion->setDefense(minion->getDefense() - target->getAttack());
-        if (target->getDefense() <= 0) {
-            inactivePlayer->getGraveyard()->addCard(inactivePlayer->getBoard()->removeCard(targetIndex));
-        }
+        // apnap order
         if (minion->getDefense() <= 0) {
-            activePlayer->getGraveyard()->addCard(activePlayer->getBoard()->removeCard(index));
+            activePlayer->killMinion(index);
+        }
+        if (target->getDefense() <= 0) {
+            inactivePlayer->killMinion(targetIndex);
         }
     } 
 }
@@ -107,3 +111,9 @@ void Game::notify(unique_ptr<Command> command) {
 }
 
 void Game::trigger(Triggers trigger) {}
+
+void Game::applyEnchantment(std::unique_ptr<Enchantment> ench, int player, int idx) {
+    Player* targetPlayer = getPlayer(player);
+    targetPlayer->getBoard()->applyEnchantment(std::move(ench), idx);
+}
+

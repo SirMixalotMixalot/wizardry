@@ -5,7 +5,7 @@
 
 class MagicFatigue : public Enchantment {
     public:
-        MagicFatigue(Player* owner, Minion* next);
+        MagicFatigue(Player* owner, unique_ptr<Minion> next);
         ~MagicFatigue() override = default;
 
         int getActivatedAbilityCost() const override; // Add 2 to next's activated ability cost

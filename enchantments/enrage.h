@@ -5,7 +5,7 @@
 
 class Enrage : public Enchantment {
     public:
-        Enrage(Player* owner, Minion* next);
+        Enrage(Player* owner, unique_ptr<Minion> next);
         ~Enrage() override = default;
 
         int getAttack() const override; // Multiply 2 to next's attack

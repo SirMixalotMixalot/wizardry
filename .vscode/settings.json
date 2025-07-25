@@ -11,6 +11,7 @@
         "stdexcept": "cpp",
         "xhash": "cpp",
         "unordered_map": "cpp",
-        "xstring": "cpp"
-}
+        "xstring": "cpp",
+        "memory": "cpp"
+    }
 }

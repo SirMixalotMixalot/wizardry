@@ -5,7 +5,7 @@
 
 class GiantStrength : public Enchantment {
     public:
-        GiantStrength(Player* owner, Minion* next);
+        GiantStrength(Player* owner, unique_ptr<Minion> next);
         ~GiantStrength() override = default;
 
         int getAttack() const override; // Add 2 to next's attack

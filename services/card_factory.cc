@@ -14,6 +14,12 @@
 #include "banish.h"
 #include "blizzard.h"
 
+#include "enrage.h"
+#include "giantstrength.h"
+#include "haste.h"
+#include "magicfatigue.h"
+#include "silence.h"
+
 #include <stdexcept>
 #include <unordered_map>
 
@@ -33,6 +39,13 @@ static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators
         {"Raise Dead", [](Player* o){ return std::make_unique<RaiseDead>(o); }},
         {"Banish", [](Player* o){ return std::make_unique<Banish>(o); }},
         {"Blizzard", [](Player* o){ return std::make_unique<Blizzard>(o); }},
+        // enchantments
+        {"Enrage", [](Player* o){ return std::make_unique<Enrage>(o, nullptr); }},
+        {"Giant Strength", [](Player* o){ return std::make_unique<GiantStrength>(o, nullptr); }},
+        {"Haste", [](Player* o){ return std::make_unique<Haste>(o, nullptr); }},
+        {"Magic Fatigue", [](Player* o){ return std::make_unique<MagicFatigue>(o, nullptr); }},
+        {"Silence", [](Player* o){ return std::make_unique<Silence>(o, nullptr); }},
+
     };
     return table;
 }

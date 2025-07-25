@@ -50,6 +50,9 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         while (getline(file, line)) {
             if (!line.empty()) {
                 // process command
+                if (checkGameOver()) {
+                    break; // exit if game is over
+                }
                 processCommand(line, testFlag);
                 if (line == "quit") {
                     return;
@@ -70,14 +73,29 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
 
     // main loop, take additional commands
     while (true) {
+
         getline(cin, command);
-        
+        if (checkGameOver()) {
+            break; // exit if game is over
+        }
         // process command
         processCommand(command, testFlag);
         if (command == "quit") {
             return;
         }
     }
+}
+
+bool GameController::checkGameOver() {
+    if (game->getActivePlayer()->getHealth() <= 0) {
+        cout << game->getInactivePlayer()->getName() << " wins!" << endl;
+        return true;
+    } else if (game->getInactivePlayer()->getHealth() <= 0) {
+        cout << game->getActivePlayer()->getName() << " wins!" << endl;
+        return true;
+    }
+
+    return false;
 }
 
 void GameController::processCommand(const string& command, bool testFlag) {
@@ -122,7 +140,7 @@ void GameController::processCommand(const string& command, bool testFlag) {
         string args;
         getline(iss, args);
         use(args);
-    } else if (cmd == "describe") {
+    } else if (cmd == "inspect") {
         string args;
         getline(iss, args);
         describe(args);
@@ -194,7 +212,7 @@ void GameController::play(const string& args) {
     int i;
     int p;
     int t;
-    char target_card;
+    string target_card;
     iss >> i;
 
     if (i < 1 || i > game->getActivePlayer()->getHand()->getSize()) {
@@ -207,16 +225,20 @@ void GameController::play(const string& args) {
             cout << "Invalid player index. Use 1 or 2." << endl;
             return;
         }
-        if (target_card == 'r') {
+        if (target_card.empty() || target_card.size() != 1) {
+            cout << "Invalid target card. Use a single character." << endl;
+            return;
+        }
+        char target_card_c = target_card[0];
+        if (target_card_c == 'r') {
             t = -1; // ritual
-        } else if (target_card >= '0' && target_card <= '4') {
-            t = target_card - '0'; // convert char to int
+        } else if (target_card_c >= '0' && target_card_c <= '4') {
+            t = (target_card_c - '0') - 1; // convert char to int
         } else {
             cout << "Invalid target card. Use 'r' for ritual or a digit for minion index." << endl;
             return;
         }
-
-        if (p < 1 || p > 2 || t < 0 || t > game->getPlayer(p)->getBoard()->getSize()) {
+        if (p < 1 || p > 2 || t >= game->getPlayer(p)->getBoard()->getSize()) {
             view->invalidCommand();
             return;
         }

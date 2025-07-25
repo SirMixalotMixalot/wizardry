@@ -1,9 +1,11 @@
 #include "player.h"
 #include "minion.h"
 #include <iostream>
+#include "enchantment.h"
 #include "spell.h"
 #include <stdexcept>
 #include <memory>
+#include <applyenchantmentcommand.h>
 using namespace std;
 
 Player::Player(const string& name, const string& deckFile, Game* game) : name(name), magic(3), health(20), game(game) {
@@ -22,21 +24,28 @@ void Player::drawCard() {
     }
 }
 
-unique_ptr<Card> Player::discardCard(int index) {
-    return hand->removeCard(index);
+void Player::discardCard(int index) {
+    hand->removeCard(index);
 }
 
-Card* Player::playCard(int index, int targetPlayer, int targetCard) {
+void Player::playCard(int index, int targetPlayer, int targetCard) {
     if (index < 0 || index >= hand->getSize()) {
-        return nullptr;
+        throw std::out_of_range("Invalid card index");
     }
 
     Card* card = hand->getCard(index);
     if (magic < card->getCost()) {
-        return nullptr;
+        throw std::runtime_error("Not enough magic to play this card");
     }
 
-    // only use the card if it is a spell
+    if (dynamic_cast<Enchantment*>(card))
+    {
+        // make sure it has a targetPlayer and targetCard
+        if (targetPlayer < 1 || targetPlayer > 2 || targetCard < -1 || targetCard > 4) {
+            throw std::invalid_argument("Invalid target player or card index for enchantment");
+        }
+    }
+
     if (dynamic_cast<Spell*>(card)) {
         // get the cards command
         unique_ptr<Command> command;
@@ -51,17 +60,21 @@ Card* Player::playCard(int index, int targetPlayer, int targetCard) {
         // notify the game with the command
         game->notify(move(command));
     }
+
     // incase the spell fails, we only change the magic after the command is executed
     magic -= card->getCost();
 
     unique_ptr<Card> playedCard = hand->removeCard(index);
     Card* rawCard = playedCard.get();
-
-    // only add the card to the board if it is not a spell
-    if (!dynamic_cast<Spell*>(rawCard)) {
+    if (dynamic_cast<Enchantment*>(rawCard)) {
+        unique_ptr<Enchantment> enchantment{static_cast<Enchantment*>(playedCard.release())};
+        game->notify(make_unique<ApplyEnchantmentCommand>(targetPlayer, targetCard, move(enchantment)));
+        return;
+    }
+    // only add the card to the board if it is a new minion
+    if (dynamic_cast<Minion*>(rawCard)) {
         board->addCard(move(playedCard));
     }
-    return rawCard;
 }
 
 Minion* Player::getMinion(int index) {
