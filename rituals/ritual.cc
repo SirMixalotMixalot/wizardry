@@ -21,10 +21,13 @@ int Ritual::getNumberOfCharges() {
     return numCharges;
 }
 
+<<<<<<< HEAD
 void Ritual::setNumberOfCharges(int numCharges) {
     this->numCharges = numCharges;
 }
 
+=======
+>>>>>>> 3d1e4b3 (dark ritual implementation)
 unique_ptr<Command> Ritual::use() {
     return nullptr;
 }
