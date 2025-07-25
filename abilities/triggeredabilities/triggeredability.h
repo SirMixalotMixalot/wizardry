@@ -12,9 +12,11 @@ class TriggeredAbility : public Ability {
 
     public:
         TriggeredAbility(string description, Triggers trigger);
-        virtual ~TriggeredAbility() = 0;
+        virtual ~TriggeredAbility() = default;
         
         Triggers getTrigger();
+
+        virtual unique_ptr<Command> use() = 0;
 };
 
 #endif

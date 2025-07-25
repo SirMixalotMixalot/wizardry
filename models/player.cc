@@ -111,9 +111,10 @@ void Player::trigger(Triggers trigger) {
     Ritual* ritual = dynamic_cast<Ritual*>(board->getRitual());
 
     if (ritual) {
-        if (ritual->getTriggeredAbility()) {
+        if (ritual->getNumberOfCharges() - ritual->getActivationCost() >= 0) {
             TriggeredAbility* ability = ritual->getTriggeredAbility();
             if (ability->getTrigger() == trigger) {
+                ritual->setNumberOfCharges(ritual->getNumberOfCharges() - ritual->getActivationCost());
                 unique_ptr<Command> command = ability->use();
                 game->notify(move(command));
             }

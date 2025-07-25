@@ -21,6 +21,10 @@ int Ritual::getNumberOfCharges() {
     return numCharges;
 }
 
+void Ritual::setNumberOfCharges(int numCharges) {
+    this->numCharges = numCharges;
+}
+
 unique_ptr<Command> Ritual::use() {
     return nullptr;
 }

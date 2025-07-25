@@ -18,6 +18,7 @@ class Ritual : public Card {
         TriggeredAbility* getTriggeredAbility();
         int getActivationCost();
         int getNumberOfCharges();
+        void setNumberOfCharges(int numCharges);
 
         virtual unique_ptr<Command> use() override;
         virtual unique_ptr<Command> use(int player, int targetCard) override;

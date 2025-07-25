@@ -5,10 +5,13 @@
 #include "command.h"
 #include "activatedabilities.h"
 
+#include "triggeredability.h"
+
 class Minion : public Card {
     int attack;
     int defense;
     int actions;
+    unique_ptr<TriggeredAbility> triggeredAbility;
     unique_ptr<ActivatedAbility> activatedAbility;
 
     public:
@@ -18,6 +21,7 @@ class Minion : public Card {
         virtual int getAttack() const;
         virtual int getDefense() const;
         virtual int getActions() const;
+        TriggeredAbility* getTriggeredAbility() const;
         virtual int getActivatedAbilityCost() const; // NOTE: IMPLEMENTATION NEEDED
         virtual bool canUseAbilities() const = 0;
 

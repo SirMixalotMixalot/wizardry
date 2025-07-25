@@ -135,6 +135,9 @@ void Game::notify(unique_ptr<Command> command) {
 
 void Game::trigger(Triggers trigger) {
     activePlayer->trigger(trigger);
+    if (trigger == Triggers::MINION_ENTERS_PLAY || trigger == Triggers::MINION_LEAVES_PLAY) {
+        inactivePlayer->trigger(trigger);
+    }
 }
 
 void Game::applyEnchantment(std::unique_ptr<Enchantment> ench, int player, int idx) {
