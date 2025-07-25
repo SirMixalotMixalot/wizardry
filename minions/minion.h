@@ -3,13 +3,16 @@
 
 #include "card.h"
 #include "command.h"
+#include "activatedabilities.h"
+
 class Minion : public Card {
     int attack;
     int defense;
     int actions;
+    unique_ptr<ActivatedAbility> activatedAbility;
 
     public:
-        Minion(string name, Player* owner, string description, int cost, int attack, int defense);
+        Minion(string name, Player* owner, string description, int cost, int attack, int defense, unique_ptr<ActivatedAbility> activatedAbility);
         ~Minion() override = default;
 
         virtual int getAttack() const;
