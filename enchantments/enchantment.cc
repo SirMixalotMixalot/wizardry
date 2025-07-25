@@ -61,3 +61,7 @@ void Enchantment::setActions(int actions) {
 void Enchantment::setNext(unique_ptr<Minion> nextMinion) {
     next = std::move(nextMinion);
 }
+
+const Minion* Enchantment::getNext() const {
+    return next.get();
+}
