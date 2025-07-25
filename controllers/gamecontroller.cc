@@ -6,6 +6,7 @@
 #include "textualdisplay.h"
 #include "attackcommand.h"
 #include "playcommand.h"
+#include "usecommand.h"
 #include "minion.h"
 
 using namespace std;
@@ -139,7 +140,11 @@ void GameController::processCommand(const string& command, bool testFlag) {
     } else if (cmd == "use") {
         string args;
         getline(iss, args);
-        use(args);
+        try {
+            use(args);
+        } catch (const std::exception& e) {
+            cout << "Cannot use minion: " << e.what() << endl;
+        }
     } else if (cmd == "inspect") {
         string args;
         getline(iss, args);
@@ -250,7 +255,45 @@ void GameController::play(const string& args) {
 }
 
 void GameController::use(const string& args) {
-    cout << "use" << args << endl;
+    istringstream iss(args);
+    int i;
+    int p;
+    int t;
+    string target_card;
+    iss >> i;
+
+    if (i < 1 || i > game->getActivePlayer()->getBoard()->getSize()) {
+        view->invalidCommand();
+        return;
+    }
+
+    if (iss >> p && iss >> target_card) {
+        if (p < 1 || p > 2) {
+            cout << "Invalid player index. Use 1 or 2." << endl;
+            return;
+        }
+        if (target_card.empty() || target_card.size() != 1) {
+            cout << "Invalid target card. Use a single character." << endl;
+            return;
+        }
+        char target_card_c = target_card[0];
+        if (target_card_c == 'r') {
+            t = -1; // ritual
+        } else if (target_card_c >= '0' && target_card_c <= '4') {
+            t = (target_card_c - '0') - 1; // convert char to int
+        } else {
+            cout << "Invalid target card. Use 'r' for ritual or a digit for minion index." << endl;
+            return;
+        }
+        if (p < 1 || p > 2 || t >= game->getPlayer(p)->getBoard()->getSize()) {
+            view->invalidCommand();
+            return;
+        }
+        
+        game->notify(make_unique<UseCommand>(i - 1, p, t));
+    } else {
+        game->notify(make_unique<UseCommand>(i - 1));
+    }
 }
 
 void GameController::describe(const string& args) {

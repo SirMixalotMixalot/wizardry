@@ -96,9 +96,31 @@ void Game::playCard(int index, int targetPlayer, int targetCard) {
     activePlayer->playCard(index, targetPlayer, targetCard);
 }
 
-void Game::useMinion(int index) {}
+void Game::useMinion(int index) {
+    Minion* minion = activePlayer->getMinion(index);
+    if (minion != nullptr && minion->canUseAbilities() && minion->getActions() > 0 && activePlayer->getMagic() >= minion->getActivatedAbilityCost()) {
+        unique_ptr<Command> command = minion->use();
+        notify(move(command)); // call Game.notify with the command
+        minion->setActions(minion->getActions() - 1);
+        activePlayer->setMagic(activePlayer->getMagic() - minion->getActivatedAbilityCost());
+    } 
+    else {
+        throw runtime_error("Selected minion cannot use abilities or has no actions left.");
+    }
+}
 
-void Game::useMinion(int index, int targetPlayer, char targetCard) {}
+void Game::useMinion(int index, int targetPlayer, int targetCard) { // NOTE: This method shares a lot of code with the previous one and can probably be combined in the future.
+    Minion* minion = activePlayer->getMinion(index);
+    if (minion != nullptr && minion->canUseAbilities() && minion->getActions() > 0 && activePlayer->getMagic() >= minion->getActivatedAbilityCost()) {
+        unique_ptr<Command> command = minion->use(targetPlayer, targetCard);
+        notify(move(command)); // call Game.notify with the command
+        minion->setActions(minion->getActions() - 1);
+        activePlayer->setMagic(activePlayer->getMagic() - minion->getActivatedAbilityCost());
+    } 
+    else {
+        throw runtime_error("Selected minion cannot use abilities or has no actions left.");
+    }
+}
 
 Minion* Game::inspectMinion(int index) {}
 

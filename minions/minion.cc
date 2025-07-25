@@ -18,7 +18,10 @@ int Minion::getActions() const {
 }
 
 int Minion::getActivatedAbilityCost() const {
-    // NOTE: IMPLEMENTATION NEEDED
+    if (!activatedAbility) {
+        throw runtime_error("Selected minion has no activated ability.");
+    }
+    return activatedAbility->getCost();
 }
 
 void Minion::setAttack(int attack) {
@@ -37,6 +40,16 @@ void Minion::restoreActions() {
     actions = 1;
 }
 
-unique_ptr<Command> Minion::use() {}
+unique_ptr<Command> Minion::use() {
+    if (!activatedAbility) {
+        throw runtime_error("Selected minion has no activated ability.");
+    }
+    return activatedAbility->use(); // Use the activated ability
+}
 
-unique_ptr<Command> Minion::use(int index, int target) {}
+unique_ptr<Command> Minion::use(int index, int target) {
+    if (!activatedAbility) {
+        throw runtime_error("Selected minion has no activated ability.");
+    }
+    return activatedAbility->use(index, target); // Use the activated ability with parameters
+}
