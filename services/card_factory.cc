@@ -20,6 +20,8 @@
 #include "magicfatigue.h"
 #include "silence.h"
 
+#include "darkritual.h"
+
 #include <stdexcept>
 #include <unordered_map>
 
@@ -46,6 +48,8 @@ static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators
         {"Magic Fatigue", [](Player* o){ return std::make_unique<MagicFatigue>(o, nullptr); }},
         {"Silence", [](Player* o){ return std::make_unique<Silence>(o, nullptr); }},
 
+        // rituals
+        {"Dark Ritual", [](Player* o){ return std::make_unique<DarkRitual>(o); }},
     };
     return table;
 }

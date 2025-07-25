@@ -3,13 +3,17 @@
 
 #include "card_collection.h"
 #include "enums.h"
+#include "ritual.h"
 
 class Board : public CardCollection {
+    unique_ptr<Card> ritual;
+
     public:
-        Board() = default;
+        Board();
         ~Board() override = default;
-        
-        void trigger(Triggers trigger);
+
+        Card* getRitual();
+        void setRitual(unique_ptr<Card> ritual); 
         void applyEnchantment(std::unique_ptr<Enchantment> enchantment, int minionIndex);
 };
 

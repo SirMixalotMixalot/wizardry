@@ -1,7 +1,17 @@
 #include "board.h"
 #include "minion.h"
 #include "enchantment.h"
-void Board::trigger(Triggers trigger) {}
+#include "card.h"
+
+Board::Board() : ritual(nullptr) {}
+
+Card* Board::getRitual() {
+    return ritual.get();
+}
+
+void Board::setRitual(unique_ptr<Card> ritual) {
+    this->ritual = move(ritual);
+}
 
 void Board::applyEnchantment(std::unique_ptr<Enchantment> ench, int idx) {
     if (idx < 0 || idx >= getSize()) {

@@ -1,5 +1,5 @@
-#ifndef ABILITIES_H
-#define ABILITIES_H
+#ifndef ABILITY_H
+#define ABILITY_H
 
 #include "command.h"
 #include <string>
@@ -16,7 +16,6 @@ class Ability {
         virtual ~Ability() = default;
     
         virtual unique_ptr<Command> use() = 0;
-        virtual unique_ptr<Command> use(int player, int targetCard) = 0;
         string getDescription();
 
 };

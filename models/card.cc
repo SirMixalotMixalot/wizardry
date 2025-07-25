@@ -22,5 +22,3 @@ string Card::getDescription() const {
 int Card::getCost() const {
     return cost;
 }
-
-void Card::trigger(Triggers trigger) {}

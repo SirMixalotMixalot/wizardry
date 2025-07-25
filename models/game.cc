@@ -47,12 +47,13 @@ void Game::startTurn() {
             activePlayer->getMinion(i)->restoreActions();
         }
     }
-    // start of turn effects trigger
+    trigger(Triggers::START_OF_TURN);
 }
 
 void Game::endTurn() {
     // end of turn effects trigger
     switchActivePlayer();
+    trigger(Triggers::END_OF_TURN);
 }
 
 void Game::draw() {
@@ -132,7 +133,9 @@ void Game::notify(unique_ptr<Command> command) {
     command->execute(*this);
 }
 
-void Game::trigger(Triggers trigger) {}
+void Game::trigger(Triggers trigger) {
+    activePlayer->trigger(trigger);
+}
 
 void Game::applyEnchantment(std::unique_ptr<Enchantment> ench, int player, int idx) {
     Player* targetPlayer = getPlayer(player);
