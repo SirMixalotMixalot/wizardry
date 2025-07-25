@@ -112,6 +112,7 @@ void Player::trigger(Triggers trigger) {
 
     if (ritual) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (ritual->getNumberOfCharges() - ritual->getActivationCost() >= 0) {
             TriggeredAbility* ability = ritual->getTriggeredAbility();
             if (ability->getTrigger() == trigger) {
@@ -121,6 +122,12 @@ void Player::trigger(Triggers trigger) {
             TriggeredAbility* ability = ritual->getTriggeredAbility();
             if (ability->getTrigger() == trigger) {
 >>>>>>> 3d1e4b3 (dark ritual implementation)
+=======
+        if (ritual->getNumberOfCharges() - ritual->getActivationCost() >= 0) {
+            TriggeredAbility* ability = ritual->getTriggeredAbility();
+            if (ability->getTrigger() == trigger) {
+                ritual->setNumberOfCharges(ritual->getNumberOfCharges() - ritual->getActivationCost());
+>>>>>>> 90f03d8 (add code)
                 unique_ptr<Command> command = ability->use();
                 game->notify(move(command));
             }
