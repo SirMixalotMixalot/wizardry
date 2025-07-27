@@ -109,6 +109,16 @@ Graveyard* Player::getGraveyard() const {
 }
 
 void Player::trigger(Triggers trigger) {
+    for (int i = 0; i < board->getSize(); i++) {
+        TriggeredAbility* triggeredAbility = getMinion(i)->getTriggeredAbility();
+        if (triggeredAbility != nullptr) {
+            if (triggeredAbility->getTrigger() == trigger) {
+                unique_ptr<Command> command = triggeredAbility->use();
+                game->notify(move(command));
+            }
+        }
+    }
+
     Ritual* ritual = dynamic_cast<Ritual*>(board->getRitual());
 
     if (ritual) {

@@ -11,11 +11,12 @@ class Minion : public Card {
     int attack;
     int defense;
     int actions;
+
     unique_ptr<TriggeredAbility> triggeredAbility;
     unique_ptr<ActivatedAbility> activatedAbility;
 
     public:
-        Minion(string name, Player* owner, string description, int cost, int attack, int defense, unique_ptr<ActivatedAbility> activatedAbility);
+        Minion(string name, Player* owner, string description, int cost, int attack, int defense, unique_ptr<ActivatedAbility> activatedAbility = nullptr, unique_ptr<TriggeredAbility> triggeredAbility = nullptr);
         ~Minion() override = default;
 
         virtual int getAttack() const;
