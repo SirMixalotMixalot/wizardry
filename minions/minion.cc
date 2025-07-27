@@ -2,8 +2,8 @@
 
 using namespace std;
 
-Minion::Minion(string name, Player* owner, string description, int cost, int attack, int defense, unique_ptr<ActivatedAbility> activatedAbility)
-    : Card(name, owner, description, cost), attack(attack), defense(defense), actions(0), activatedAbility(move(activatedAbility)) {}
+Minion::Minion(string name, Player* owner, string description, int cost, int attack, int defense, unique_ptr<ActivatedAbility> activatedAbility, unique_ptr<TriggeredAbility> triggeredAbility)
+    : Card(name, owner, description, cost), attack(attack), defense(defense), actions(0), activatedAbility(move(activatedAbility)), triggeredAbility(move(triggeredAbility)) {}
 
 int Minion::getAttack() const {
     return attack;
