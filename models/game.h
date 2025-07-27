@@ -14,6 +14,7 @@ class Game {
     std::unique_ptr<Player> player2;
     Player* activePlayer;
     Player* inactivePlayer;
+    Minion* lastPlayedMinion = nullptr;
 
     public:
         Game(string name1, string name2, string deck1File, string deck2File);
@@ -39,6 +40,8 @@ class Game {
         void playCard(int index, int targetPlayer, int targetCard); // target player and card
         void useMinion(int index); // no target
         void useMinion(int index, int targetPlayer, int targetCard); // target player and card
+        Minion* getLastPlayedMinion();
+        void setLastPlayedMinion(Minion* minion);
         Minion* inspectMinion(int index);
 
         Hand* getHand(); // for display

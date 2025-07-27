@@ -76,7 +76,8 @@ void Player::playCard(int index, int targetPlayer, int targetCard) {
     if (dynamic_cast<Minion*>(rawCard)) {
         // if the card is a ritual, need to add to ritual slot on board
         board->addCard(move(playedCard));
-        trigger(Triggers::MINION_ENTERS_PLAY);
+        game->setLastPlayedMinion(dynamic_cast<Minion*>(rawCard));
+        game->trigger(Triggers::MINION_ENTERS_PLAY);
     } else if (dynamic_cast<Ritual*>(rawCard)) {
         board->setRitual(move(playedCard));
     }
@@ -164,7 +165,7 @@ void Player::killMinion(int index) {
     if (card) {
         graveyard->addCard(move(card));
     }
-    trigger(Triggers::MINION_LEAVES_PLAY);
+    game->trigger(Triggers::MINION_LEAVES_PLAY);
 }
 
 void Player::returnMinionToHand(int index) {
@@ -176,5 +177,5 @@ void Player::returnMinionToHand(int index) {
     if (card) {
         hand->addCard(move(card));
     }
-    trigger(Triggers::MINION_LEAVES_PLAY);
+    game->trigger(Triggers::MINION_LEAVES_PLAY);
 }

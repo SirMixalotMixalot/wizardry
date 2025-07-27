@@ -1,7 +1,7 @@
 #ifndef SUMMONMINIONS_H
 #define SUMMONMINIONS_H
 
-#include "activatedabilities.h"
+#include "activatedability.h"
 
 class SummonMinions : public ActivatedAbility {
     string minionName;

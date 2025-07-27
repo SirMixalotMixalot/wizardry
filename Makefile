@@ -1,6 +1,6 @@
 CXX       := g++
 CXXFLAGS  := -std=c++14 -Wall -g
-CPPFLAGS  := -MMD -MP -Iminions -Iservices -Ispells -I. -Icommands -Ienchantments -Icontrollers -Imodels -Iviews -Iabilities -Iabilities/activatedabilities -Iasciiart
+CPPFLAGS  := -MMD -MP -Iminions -Iservices -Ispells -I. -Icommands -Ienchantments -Icontrollers -Imodels -Iviews -Iabilities -Iabilities/activatedabilities -Iasciiart -Irituals -Iabilities/triggeredabilities
 EXEC      := sorcery
 
 SRCS := $(wildcard *.cc minions/*.cc services/*.cc spells/*.cc commands/*.cc enchantments/*.cc controllers/*.cc models/*.cc views/*.cc abilities/*.cc abilities/activatedabilities/*.cc asciiart/*.cc abilities/triggeredabilities/*.cc rituals/*.cc)

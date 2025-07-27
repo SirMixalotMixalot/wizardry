@@ -123,6 +123,14 @@ void Game::useMinion(int index, int targetPlayer, int targetCard) { // NOTE: Thi
     }
 }
 
+Minion* Game::getLastPlayedMinion() {
+    return lastPlayedMinion;
+}
+
+void Game::setLastPlayedMinion(Minion* minion) {
+    lastPlayedMinion = minion;
+}
+
 Minion* Game::inspectMinion(int index) {}
 
 Hand* Game::getHand() {
