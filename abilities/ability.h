@@ -15,7 +15,6 @@ class Ability {
         Ability(string description); 
         virtual ~Ability() = default;
     
-        virtual unique_ptr<Command> use() = 0;
         string getDescription();
 
 };
