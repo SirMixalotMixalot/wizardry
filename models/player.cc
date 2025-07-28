@@ -179,3 +179,8 @@ void Player::returnMinionToHand(int index) {
         hand->addCard(move(card));
     }
 }
+
+void Player::removeEnchantment(int targetMinion) 
+{
+    board->removeEnchantment(targetMinion);
+}

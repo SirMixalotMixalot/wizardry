@@ -16,6 +16,7 @@ class Board : public CardCollection {
         Card* getRitual();
         void setRitual(unique_ptr<Card> ritual); 
         void applyEnchantment(std::unique_ptr<Enchantment> enchantment, int minionIndex);
+        void removeEnchantment(int targetMinion);
 };
 
 #endif
