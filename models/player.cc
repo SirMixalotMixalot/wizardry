@@ -71,9 +71,15 @@ void Player::playCard(int index, int targetPlayer, int targetCard) {
         game->notify(make_unique<ApplyEnchantmentCommand>(targetPlayer, targetCard, move(enchantment)));
         return;
     }
+    
     // only add the card to the board if it is a new minion
     if (dynamic_cast<Minion*>(rawCard)) {
+        // if the card is a ritual, need to add to ritual slot on board
         board->addCard(move(playedCard));
+        game->setLastPlayedMinion(dynamic_cast<Minion*>(rawCard));
+        game->trigger(Triggers::MINION_ENTERS_PLAY);
+    } else if (dynamic_cast<Ritual*>(rawCard)) {
+        board->setRitual(move(playedCard));
     }
 }
 
@@ -102,7 +108,20 @@ Graveyard* Player::getGraveyard() const {
     return graveyard.get();
 }
 
-void Player::trigger(Triggers trigger) {}
+void Player::trigger(Triggers trigger) {
+    Ritual* ritual = dynamic_cast<Ritual*>(board->getRitual());
+
+    if (ritual) {
+        if (ritual->getNumberOfCharges() - ritual->getActivationCost() >= 0) {
+            TriggeredAbility* ability = ritual->getTriggeredAbility();
+            if (ability->getTrigger() == trigger) {
+                ritual->setNumberOfCharges(ritual->getNumberOfCharges() - ritual->getActivationCost());
+                unique_ptr<Command> command = ability->use();
+                game->notify(move(command));
+            }
+        }
+    }
+}
 
 int Player::getMagic() const {
     return magic;
@@ -133,6 +152,7 @@ void Player::killMinion(int index) {
     if (card) {
         graveyard->addCard(move(card));
     }
+    game->trigger(Triggers::MINION_LEAVES_PLAY);
 }
 
 void Player::returnMinionToHand(int index) {
@@ -144,4 +164,5 @@ void Player::returnMinionToHand(int index) {
     if (card) {
         hand->addCard(move(card));
     }
+    game->trigger(Triggers::MINION_LEAVES_PLAY);
 }

@@ -1,7 +1,7 @@
-#ifndef ACTIVATEDABILITIES_H
-#define ACTIVATEDABILITIES_H
+#ifndef ACTIVATEDABILITY_H
+#define ACTIVATEDABILITY_H
 
-#include "../abilities.h"
+#include "ability.h"
 
 class ActivatedAbility : public Ability {
     int cost;
@@ -10,8 +10,8 @@ class ActivatedAbility : public Ability {
         ActivatedAbility(string description, int cost);
         ~ActivatedAbility() override = default;
 
-        unique_ptr<Command> use() = 0;
-        unique_ptr<Command> use(int player, int targetCard) = 0;
+        virtual unique_ptr<Command> use() = 0;
+        virtual unique_ptr<Command> use(int player, int targetCard) = 0;
 
         int getCost() const;
 };

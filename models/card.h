@@ -25,7 +25,6 @@ class Card {
     
         virtual unique_ptr<Command> use() = 0;
         virtual unique_ptr<Command> use(int player, int targetCard) = 0;
-        void trigger(Triggers trigger);
 };
 
 #endif

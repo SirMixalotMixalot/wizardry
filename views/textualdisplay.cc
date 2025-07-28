@@ -87,6 +87,13 @@ void TextualDisplay::showBoard(const Game& game) {
     if (game.getActivePlayer()->getBoard()->getSize() == 0) {
         cout << "No cards on the board" << endl;
     }
+    cout << game.getActivePlayer()->getName() << "'s Ritual:" << endl;
+    if (dynamic_cast<Ritual*>(game.getActivePlayer()->getBoard()->getRitual())) {
+        Ritual* ritual = dynamic_cast<Ritual*>(game.getActivePlayer()->getBoard()->getRitual());
+        cout << "Ritual: " << ritual->getName() << " (" << ritual->getNumberOfCharges() << ")" << endl;;
+    } else {
+        cout << "No ritual on the board" << endl;
+    }
     cout << game.getActivePlayer()->getName() << "'s Graveyard: " << endl;
     for (int i = 0; i < game.getActivePlayer()->getGraveyard()->getSize(); i++) {
         cout << "Card " << i + 1 << ": " << game.getActivePlayer()->getGraveyard()->getCard(i)->getName() << endl;
@@ -103,6 +110,13 @@ void TextualDisplay::showBoard(const Game& game) {
     }
     if (game.getInactivePlayer()->getBoard()->getSize() == 0) {
         cout << "No cards on the board" << endl;
+    }
+    cout << game.getInactivePlayer()->getName() << "'s Ritual:" << endl;
+    if (dynamic_cast<Ritual*>(game.getInactivePlayer()->getBoard()->getRitual())) {
+        Ritual* ritual = dynamic_cast<Ritual*>(game.getInactivePlayer()->getBoard()->getRitual());
+        cout << "Ritual: " << ritual->getName() << " (" << ritual->getNumberOfCharges() << ")" << endl;;
+    } else {
+        cout << "No ritual on the board" << endl;
     }
     cout << game.getInactivePlayer()->getName() << "'s Graveyard: " << endl;
     for (int i = 0; i < game.getInactivePlayer()->getGraveyard()->getSize(); i++) {
@@ -130,6 +144,7 @@ void TextualDisplay::showHand(const Hand& hand) {
             cards.push_back(card);
         } 
         else {
+            cout << "Card " << i + 1 << ": " << hand.getCard(i)->getName() << endl;
             cout << "Unprintable type in hand." << endl;
         }
     }

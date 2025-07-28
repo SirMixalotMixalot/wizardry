@@ -1,7 +1,7 @@
 #ifndef DAMAGEMINION_H
 #define DAMAGEMINION_H
 
-#include "activatedabilities.h"
+#include "activatedability.h"
 
 class DamageMinion : public ActivatedAbility {
     int damage;

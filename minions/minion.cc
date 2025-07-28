@@ -17,6 +17,10 @@ int Minion::getActions() const {
     return actions;
 }
 
+TriggeredAbility* Minion::getTriggeredAbility() const {
+    return triggeredAbility.get();
+}
+
 int Minion::getActivatedAbilityCost() const {
     if (!activatedAbility) {
         throw runtime_error("Selected minion has no activated ability.");
