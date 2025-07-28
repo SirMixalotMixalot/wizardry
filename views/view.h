@@ -15,6 +15,8 @@ class View {
         virtual void showBoard(const Game& game) = 0;
         virtual void showHand(const Hand& hand) = 0;
         virtual void invalidCommand() = 0;
+        virtual void showErrorMessage(const std::string& message) = 0;
+        virtual void showWinner(const std::string& winner) = 0;
 };
 
 #endif

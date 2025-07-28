@@ -287,3 +287,12 @@ card_template_t TextualDisplay::displaEnchantment(const Enchantment* enchantment
             enchantment->getDefenseModifier());
     }
 }
+
+void TextualDisplay::showErrorMessage(const std::string& message) {
+    cerr << "[Error] " << message << endl;
+}
+
+void TextualDisplay::showWinner(const std::string& winner) {
+    card_template_t winnerTemplate = display_player_card(1, winner + " wins!!!", 100, 100);
+    displayTemplate(winnerTemplate);
+}
