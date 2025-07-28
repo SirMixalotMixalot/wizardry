@@ -25,3 +25,14 @@ void Board::applyEnchantment(std::unique_ptr<Enchantment> ench, int idx) {
     slot = std::move(ench);
 }
 
+void Board::removeEnchantment(int targetMinion) {
+    
+    auto& slot = cards.at(targetMinion);
+    Enchantment* enchantment = dynamic_cast<Enchantment*>(slot.get());
+    
+    if (enchantment) {
+        auto nextMinion = enchantment->releaseNext();
+        slot = move(nextMinion);
+    }
+}
+

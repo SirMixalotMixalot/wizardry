@@ -13,6 +13,8 @@
 #include "raisedead.h"
 #include "banish.h"
 #include "blizzard.h"
+#include "disenchantment.h"
+#include "recharge.h"
 
 #include "enrage.h"
 #include "giantstrength.h"
@@ -43,6 +45,8 @@ static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators
         {"Raise Dead", [](Player* o){ return std::make_unique<RaiseDead>(o); }},
         {"Banish", [](Player* o){ return std::make_unique<Banish>(o); }},
         {"Blizzard", [](Player* o){ return std::make_unique<Blizzard>(o); }},
+        {"Disenchant", [](Player* o){return std::make_unique<Disenchantment>(o); }},
+        {"Recharge", [](Player* o){return std::make_unique<Recharge>(o);}},
         // enchantments
         {"Enrage", [](Player* o){ return std::make_unique<Enrage>(o, nullptr); }},
         {"Giant Strength", [](Player* o){ return std::make_unique<GiantStrength>(o, nullptr); }},
@@ -55,6 +59,7 @@ static const std::unordered_map<std::string, CardFactory::CreatorFunc>& creators
         {"Aura of Power", [](Player* o){ return std::make_unique<AuraOfPower>(o); }},
         {"Standstill", [](Player* o){ return std::make_unique<Standstill>(o); }},
     };
+    
     return table;
 }
 
