@@ -160,6 +160,8 @@ void Player::killMinion(int index) {
     game->trigger(Triggers::MINION_LEAVES_PLAY);
     auto card = board->removeCard(index);
     if (card) {
+        Minion* minion = dynamic_cast<Minion*>(card.get());
+        cout << minion->getName() << " has been killed " << minion->getAttack() << " " << minion->getDefense() << endl;
         graveyard->addCard(move(card));
     }
 }
@@ -173,5 +175,4 @@ void Player::returnMinionToHand(int index) {
     if (card) {
         hand->addCard(move(card));
     }
-    game->trigger(Triggers::MINION_LEAVES_PLAY);
 }
