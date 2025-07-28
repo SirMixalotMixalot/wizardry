@@ -18,5 +18,4 @@ void UnsummonCommand::execute(Game& game) {
 
     // move the minion to the player's hand
     targetPlayer->returnMinionToHand(index);
-    game.trigger(Triggers::MINION_LEAVES_PLAY);
 }
