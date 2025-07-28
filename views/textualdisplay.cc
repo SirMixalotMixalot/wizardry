@@ -4,7 +4,9 @@
 #include "minion.h"
 #include <iostream>
 #include "ascii_graphics.h"
-
+#include <algorithm>
+#include <sstream>
+#include "game.h"
 using namespace std;
 
 void TextualDisplay::displayTemplate(const card_template_t& templateLines) const {
@@ -50,7 +52,7 @@ void TextualDisplay::inspect(const Minion& minion) {
     const Enchantment* current = dynamic_cast<const Enchantment*>(&minion);
     if (!current) {
         // print minion normally
-        auto card = display_minion_no_ability(minion.getName(), minion.getCost(), minion.getAttack(), minion.getDefense());
+        auto card = display_minion(&minion);
         displayTemplate(card);
         return;
     }
@@ -67,8 +69,8 @@ void TextualDisplay::inspect(const Minion& minion) {
         
     }
 
-    // print nextMinion
-    auto card = display_minion_no_ability(nextMinion->getName(), nextMinion->getCost(), nextMinion->getAttack(), nextMinion->getDefense());
+    // print minion
+    auto card = display_minion(&minion);
     displayTemplate(card);
     // print enchantments in reverse order
     std::vector<card_template_t> reversed(enchantmentLines.rbegin(), enchantmentLines.rend());
@@ -76,56 +78,172 @@ void TextualDisplay::inspect(const Minion& minion) {
 
 }
 
+static std::vector<std::string>
+flattenRow(const std::vector<card_template_t>& row) {
+    constexpr size_t MAX_PER_ROW = 5;
+    std::vector<std::string> out;
+
+    for (size_t start = 0; start < row.size(); start += MAX_PER_ROW) {
+        size_t end = std::min(row.size(), start + MAX_PER_ROW);
+
+        // tallest card in this slice
+        size_t maxH = 0;
+        for (size_t i = start; i < end; ++i)
+        {
+            maxH = std::max(maxH, row[i].size());
+        }
+
+        for (size_t ln = 0; ln < maxH; ++ln) {
+            std::ostringstream line;
+            for (size_t i = start; i < end; ++i) {
+                const auto& card = row[i];
+                if (ln < card.size()) {
+                    line << card[ln];
+                } else {
+                    line << std::string(card.front().size(), ' ');
+                }
+            }
+            out.push_back(line.str());
+        }
+    }
+    return out;
+}
+
+static void printTopBorder(size_t width) {
+    std::cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
+    for (auto i = 0; i < width; ++i) {
+        std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
+    }
+    cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << "\n";
+}
+
+static void printBottomBorder(size_t width) {
+    std::cout << EXTERNAL_BORDER_CHAR_BOTTOM_LEFT;
+    for (auto i = 0; i < width; ++i) {
+        std::cout << EXTERNAL_BORDER_CHAR_LEFT_RIGHT;
+    }
+    cout << EXTERNAL_BORDER_CHAR_BOTTOM_RIGHT << "\n";
+}
+
+static void printLineWithBorders(const std::string& content, size_t width) {
+    std::cout << EXTERNAL_BORDER_CHAR_UP_DOWN
+              << content
+              << EXTERNAL_BORDER_CHAR_UP_DOWN << "\n";
+}
+
+card_template_t TextualDisplay::display_minion(const Minion* minion) const {
+    // if the minion is in enchanted, get the attack and defense from the enchanted minion but then display regularly
+    int attack = minion->getAttack();
+    int defense = minion->getDefense();
+
+    while (auto enchantment = dynamic_cast<const Enchantment*>(minion)) {
+        minion = enchantment->getNext();
+    }
+
+    if (minion->getActivatedAbility()) {
+        return display_minion_activated_ability(minion->getName(), minion->getCost(), attack, defense,
+        minion->getActivatedAbilityCost(), minion->getActivatedAbility()->getDescription());
+    } else if (minion->getTriggeredAbility()) {
+        return display_minion_triggered_ability(
+            minion->getName(), minion->getCost(), attack, defense,
+            minion->getTriggeredAbility()->getDescription());
+    } else {
+        return display_minion_no_ability(minion->getName(), minion->getCost(), attack, defense);
+    }
+}
+
 void TextualDisplay::showBoard(const Game& game) {
-    cout << "--------------------------------" << endl;
-    cout << game.getActivePlayer()->getName() << "'s Health: " << game.getActivePlayer()->getHealth() << endl;
-    cout << game.getActivePlayer()->getName() << "'s Magic: " << game.getActivePlayer()->getMagic() << endl;
-    cout << game.getActivePlayer()->getName() << "'s Cards: " << endl;
-    for (int i = 0; i < game.getActivePlayer()->getBoard()->getSize(); i++) {
-        cout << "Card " << i + 1 << ": " << game.getActivePlayer()->getBoard()->getCard(i)->getName() << endl;
+    const size_t WIDTH = 5 * CARD_TEMPLATE_EMPTY.front().size(); // trust me bro
+
+    // Build all inner lines (without outer top/bottom borders)
+    std::vector<std::string> beforeGraphicinner;
+    card_template_t mid = CENTRE_GRAPHIC;
+    std::vector<std::string> afterGraphicinner;
+
+    // ----- Player 1 header row (5 cards: empty, empty, P1, empty, empty)
+    {
+        auto p1 = game.getPlayer(1);
+        auto empty = CARD_TEMPLATE_EMPTY;
+        auto p1Card = display_player_card(1, p1->getName(), p1->getHealth(), p1->getMagic());
+        auto ritual = CARD_TEMPLATE_BORDER;
+        auto border = CARD_TEMPLATE_BORDER;
+        if (Ritual* ritualptr = dynamic_cast<Ritual*>(p1->getBoard()->getRitual()))
+        {
+            ritual = display_ritual(ritualptr->getName(), ritualptr->getCost(),
+            ritualptr->getActivationCost(), ritualptr->getDescription(),
+            ritualptr->getNumberOfCharges());
+        }
+        std::vector<card_template_t> row{border, empty, p1Card, empty, ritual};
+        auto lines = flattenRow(row);
+        beforeGraphicinner.insert(beforeGraphicinner.end(), lines.begin(), lines.end());
     }
-    if (game.getActivePlayer()->getBoard()->getSize() == 0) {
-        cout << "No cards on the board" << endl;
+
+    // ----- Player 1 minions
+    {
+        auto p1 = game.getPlayer(1);
+        std::vector<card_template_t> row;
+        auto& board = *p1->getBoard();
+        for (int i = 0; i < board.getSize(); ++i) {
+            Minion* m = static_cast<Minion*>(board.getCard(i));
+            row.push_back(display_minion(m));
+        }
+        while (row.size() < 5) {
+            row.push_back(CARD_TEMPLATE_BORDER);
+        }
+
+        auto lines = flattenRow(row);
+        beforeGraphicinner.insert(beforeGraphicinner.end(), lines.begin(), lines.end());
     }
-    cout << game.getActivePlayer()->getName() << "'s Ritual:" << endl;
-    if (dynamic_cast<Ritual*>(game.getActivePlayer()->getBoard()->getRitual())) {
-        Ritual* ritual = dynamic_cast<Ritual*>(game.getActivePlayer()->getBoard()->getRitual());
-        cout << "Ritual: " << ritual->getName() << " (" << ritual->getNumberOfCharges() << ")" << endl;;
-    } else {
-        cout << "No ritual on the board" << endl;
+
+
+    // ----- Player 2 minions
+    {
+        auto p2 = game.getPlayer(2);
+        std::vector<card_template_t> row;
+        auto& board = *p2->getBoard();
+        for (int i = 0; i < board.getSize(); ++i) {
+            Minion* m = static_cast<Minion*>(board.getCard(i));
+            row.push_back(display_minion(m));
+        }
+        while (row.size() < 5) {
+            row.push_back(CARD_TEMPLATE_BORDER);
+        }
+        auto lines = flattenRow(row);
+        afterGraphicinner.insert(afterGraphicinner.end(), lines.begin(), lines.end());
     }
-    cout << game.getActivePlayer()->getName() << "'s Graveyard: " << endl;
-    for (int i = 0; i < game.getActivePlayer()->getGraveyard()->getSize(); i++) {
-        cout << "Card " << i + 1 << ": " << game.getActivePlayer()->getGraveyard()->getCard(i)->getName() << endl;
+
+    // ----- Player 2 footer row
+    {
+        auto p2 = game.getPlayer(2);
+        auto empty = CARD_TEMPLATE_EMPTY;
+        auto p2Card = display_player_card(2, p2->getName(), p2->getHealth(), p2->getMagic());
+        auto ritual = CARD_TEMPLATE_BORDER;
+        auto border = CARD_TEMPLATE_BORDER;
+        if (Ritual* ritualptr = dynamic_cast<Ritual*>(p2->getBoard()->getRitual()))
+        {
+            ritual = display_ritual(ritualptr->getName(), ritualptr->getCost(),
+            ritualptr->getActivationCost(), ritualptr->getDescription(),
+            ritualptr->getNumberOfCharges());
+        }
+        std::vector<card_template_t> row{ritual, empty, p2Card, empty, border};
+        auto lines = flattenRow(row);
+        afterGraphicinner.insert(afterGraphicinner.end(), lines.begin(), lines.end());
     }
-    if (game.getActivePlayer()->getGraveyard()->getSize() == 0) {
-        cout << "No cards in graveyard" << endl;
+
+    printTopBorder(WIDTH);
+
+    for (auto& ln : beforeGraphicinner) {
+        printLineWithBorders(ln, WIDTH);
     }
-    cout << "--------------------------------" << endl;
-    cout << game.getInactivePlayer()->getName() << "'s Health: " << game.getInactivePlayer()->getHealth() << endl;
-    cout << game.getInactivePlayer()->getName() << "'s Magic: " << game.getInactivePlayer()->getMagic() << endl;
-    cout << game.getInactivePlayer()->getName() << "'s Cards: " << endl;
-    for (int i = 0; i < game.getInactivePlayer()->getBoard()->getSize(); i++) {
-        cout << "Card " << i + 1 << ": " << game.getInactivePlayer()->getBoard()->getCard(i)->getName() << endl;
+
+    for (auto& ln : mid) {
+        std::cout << ln << "\n";
     }
-    if (game.getInactivePlayer()->getBoard()->getSize() == 0) {
-        cout << "No cards on the board" << endl;
+    for (auto& ln : afterGraphicinner) {
+        printLineWithBorders(ln, WIDTH);
     }
-    cout << game.getInactivePlayer()->getName() << "'s Ritual:" << endl;
-    if (dynamic_cast<Ritual*>(game.getInactivePlayer()->getBoard()->getRitual())) {
-        Ritual* ritual = dynamic_cast<Ritual*>(game.getInactivePlayer()->getBoard()->getRitual());
-        cout << "Ritual: " << ritual->getName() << " (" << ritual->getNumberOfCharges() << ")" << endl;;
-    } else {
-        cout << "No ritual on the board" << endl;
-    }
-    cout << game.getInactivePlayer()->getName() << "'s Graveyard: " << endl;
-    for (int i = 0; i < game.getInactivePlayer()->getGraveyard()->getSize(); i++) {
-        cout << "Card " << i + 1 << ": " << game.getInactivePlayer()->getGraveyard()->getCard(i)->getName() << endl;
-    }
-    if (game.getInactivePlayer()->getGraveyard()->getSize() == 0) {
-        cout << "No cards in graveyard" << endl;
-    }
-    cout << "--------------------------------" << endl;
+
+    printBottomBorder(WIDTH);
 }
  
 void TextualDisplay::showHand(const Hand& hand) {
@@ -136,13 +254,33 @@ void TextualDisplay::showHand(const Hand& hand) {
             cards.push_back(enchantmentTemplate);
         }
         else if (auto minion = dynamic_cast<const Minion*>(hand.getCard(i))) {
-            auto card = display_minion_no_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense());
-            cards.push_back(card);
+            if (minion->getActivatedAbility()) {
+                auto card = display_minion_activated_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense(), minion->getActivatedAbilityCost() ,minion->getActivatedAbility()->getDescription());
+                cards.push_back(card);
+            } 
+            else if (minion->getTriggeredAbility()) {
+                auto card = display_minion_triggered_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense(), minion->getTriggeredAbility()->getDescription());
+                cards.push_back(card);
+            } 
+            else {
+                // no ability, display normally
+                auto card = display_minion_no_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense());
+                cards.push_back(card);
+            }
         } 
         else if (auto spell = dynamic_cast<const Spell*>(hand.getCard(i))) {
             auto card = display_spell(spell->getName(), spell->getCost(), spell->getDescription());
             cards.push_back(card);
-        } 
+        }
+        else if (auto ritual = dynamic_cast<const Ritual*>(hand.getCard(i))) {
+            auto card = display_ritual(
+                ritual->getName(),
+                ritual->getCost(),
+                ritual->getActivationCost(),
+                ritual->getDescription(),
+                ritual->getNumberOfCharges());
+            cards.push_back(card);
+        }
         else {
             cout << "Card " << i + 1 << ": " << hand.getCard(i)->getName() << endl;
             cout << "Unprintable type in hand." << endl;
