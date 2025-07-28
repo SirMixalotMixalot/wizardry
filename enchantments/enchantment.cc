@@ -65,3 +65,7 @@ void Enchantment::setNext(unique_ptr<Minion> nextMinion) {
 const Minion* Enchantment::getNext() const {
     return next.get();
 }
+
+unique_ptr<Minion> Enchantment::releaseNext() {
+    return move(next);
+}
