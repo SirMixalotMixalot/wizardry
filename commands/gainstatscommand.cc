@@ -13,6 +13,11 @@ void GainStatsCommand::execute(Game& game) {
         if (game.getActivePlayer() == owner) {
             game.getLastPlayedMinion()->setAttack(game.getLastPlayedMinion()->getAttack() + attack);
             game.getLastPlayedMinion()->setDefense(game.getLastPlayedMinion()->getDefense() + defense);
+        } else {
+            Ritual* ritual = dynamic_cast<Ritual*>(owner->getBoard()->getRitual());
+            if (ritual) {
+                ritual->setNumberOfCharges(ritual->getNumberOfCharges() + ritual->getActivationCost());
+            }
         }
     } else {
         if (game.getActivePlayer() == owner) {

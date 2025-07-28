@@ -1,0 +1,19 @@
+#include "damagecommand.h"
+#include "game.h"
+#include "player.h"
+#include "minion.h"
+
+DamageCommand::DamageCommand(Player* owner, int damage) : owner(owner), damage(damage) {}
+
+void DamageCommand::execute(Game& game) {
+    Player* activePlayer = game.getActivePlayer();
+    Player* inactivePlayer = game.getInactivePlayer();
+
+    if (owner == inactivePlayer) {
+        int index = activePlayer->getBoard()->getSize() - 1;
+        activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() - damage);
+        if (activePlayer->getMinion(index)->getDefense() <= 0) {
+            activePlayer->killMinion(index);
+        }
+    }  
+}
