@@ -9,15 +9,15 @@ Ritual::Ritual(string name, Player* owner, string description, int cost, unique_
 
 Ritual::~Ritual() = default;
 
-TriggeredAbility* Ritual::getTriggeredAbility() {
+TriggeredAbility* Ritual::getTriggeredAbility() const {
     return ability.get();
 }
 
-int Ritual::getActivationCost() {
+int Ritual::getActivationCost() const {
     return activationCost;
 }
 
-int Ritual::getNumberOfCharges() {
+int Ritual::getNumberOfCharges() const {
     return numCharges;
 }
 

@@ -18,6 +18,7 @@ class TextualDisplay : public View {
         void displayTemplate(const card_template_t& templateLines) const;
         card_template_t displaEnchantment(const Enchantment* enchantment) const;
         void displayTemplates(const std::vector<card_template_t>& cards) const;
+        card_template_t display_minion(const Minion* minion) const;
 };
 
 #endif

@@ -50,7 +50,7 @@ class Game {
         
         void trigger(Triggers trigger);
 
-        Player* getPlayer(int index); // player access
+        Player* getPlayer(int index) const; // player access
         void applyEnchantment(unique_ptr<Enchantment> enchantment,int player, int minionIndex);
 };
 
