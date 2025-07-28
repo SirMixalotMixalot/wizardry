@@ -8,7 +8,7 @@ SummonCommand::SummonCommand(const std::string& minionName, int minionCount) : m
 
 void SummonCommand::execute(Game& game) {
     Player* activePlayer = game.getActivePlayer();
-    vector<unique_ptr<Card>> newMinions;
+    vector<unique_ptr<Minion>> newMinions;
 
     // Make sure that the player's board is not full
     if (activePlayer->getBoard()->getSize() >= 5) {
@@ -26,13 +26,17 @@ void SummonCommand::execute(Game& game) {
             throw std::runtime_error("Card is not a minion: " + minionName);
         }
 
-        newMinions.push_back(move(card));
+        card.release();
+        newMinions.push_back(unique_ptr<Minion>(minion));
     }
 
     // Place minions on active player's board until the board is full or all minions are summoned.
-    for (auto& card : newMinions) {
+    for (auto& minion : newMinions) {
         if (activePlayer->getBoard()->getSize() < 5) {
-            activePlayer->getBoard()->addCard(move(card));
+            Minion* minionPtr = minion.get(); // Store raw pointer before move
+            activePlayer->getBoard()->addCard(move(minion));
+            game.setLastPlayedMinion(minionPtr);
+            game.trigger(Triggers::MINION_ENTERS_PLAY);
         } 
         else {
             break; // Stop adding if the board is full
