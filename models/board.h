@@ -9,6 +9,7 @@ class Board : public CardCollection {
     unique_ptr<Card> ritual;
 
     public:
+        static const int MAX_BOARD_SIZE = 5; // Maximum number of minions on the board
         Board();
         ~Board() override = default;
 
