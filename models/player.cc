@@ -157,19 +157,18 @@ void Player::killMinion(int index) {
     if (index < 0 || index >= board->getSize()) {
         throw std::out_of_range("Invalid minion index");
     }
-    
+    game->trigger(Triggers::MINION_LEAVES_PLAY);
     auto card = board->removeCard(index);
     if (card) {
         graveyard->addCard(move(card));
     }
-    game->trigger(Triggers::MINION_LEAVES_PLAY);
 }
 
 void Player::returnMinionToHand(int index) {
     if (index < 0 || index >= board->getSize()) {
         throw std::out_of_range("Invalid minion index");
     }
-    
+    game->trigger(Triggers::MINION_LEAVES_PLAY);
     auto card = board->removeCard(index);
     if (card) {
         hand->addCard(move(card));
