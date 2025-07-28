@@ -54,7 +54,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard) {
             command = card->use();
         } else {
             // use the card with a target player and target card
-            command = card->use(targetCard, targetPlayer);
+            command = card->use(targetPlayer, targetCard);
         }
 
         // notify the game with the command

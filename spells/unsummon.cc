@@ -7,7 +7,7 @@ Unsummon::Unsummon(Player* owner)
     : Spell("Unsummon", owner, "Return target minion to its owner's hand", 1) {}
 
 unique_ptr<Command> Unsummon::use(int player, int targetCard) {
-    bool isPlayer1 = (player == '1');
+    bool isPlayer1 = (player == 1);
 
     if (targetCard == -1)
     {
