@@ -254,19 +254,7 @@ void TextualDisplay::showHand(const Hand& hand) {
             cards.push_back(enchantmentTemplate);
         }
         else if (auto minion = dynamic_cast<const Minion*>(hand.getCard(i))) {
-            if (minion->getActivatedAbility()) {
-                auto card = display_minion_activated_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense(), minion->getActivatedAbilityCost() ,minion->getActivatedAbility()->getDescription());
-                cards.push_back(card);
-            } 
-            else if (minion->getTriggeredAbility()) {
-                auto card = display_minion_triggered_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense(), minion->getTriggeredAbility()->getDescription());
-                cards.push_back(card);
-            } 
-            else {
-                // no ability, display normally
-                auto card = display_minion_no_ability(minion->getName(), minion->getCost(), minion->getAttack(), minion->getDefense());
-                cards.push_back(card);
-            }
+            cards.push_back(display_minion(minion));
         } 
         else if (auto spell = dynamic_cast<const Spell*>(hand.getCard(i))) {
             auto card = display_spell(spell->getName(), spell->getCost(), spell->getDescription());
