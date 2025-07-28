@@ -39,6 +39,7 @@ class Player {
         void discardCard(int index);
         void playCard(int index, int targetPlayer = -1, int targetCard = 0); // targetPlayer -1 means no target
 
+        void removeEnchantment(int targetMinion);
         Minion* getMinion(int index);
         Game* getGame() const;
         Hand* getHand() const;
