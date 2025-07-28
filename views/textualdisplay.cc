@@ -80,28 +80,19 @@ void TextualDisplay::inspect(const Minion& minion) {
 
 static std::vector<std::string>
 flattenRow(const std::vector<card_template_t>& row) {
-    constexpr size_t MAX_PER_ROW = 5;
+    const size_t MAX_PER_ROW = 5;
+    const int CARD_HEIGHT = CARD_TEMPLATE_EMPTY.size();
     std::vector<std::string> out;
 
     for (size_t start = 0; start < row.size(); start += MAX_PER_ROW) {
         size_t end = std::min(row.size(), start + MAX_PER_ROW);
 
-        // tallest card in this slice
-        size_t maxH = 0;
-        for (size_t i = start; i < end; ++i)
-        {
-            maxH = std::max(maxH, row[i].size());
-        }
-
-        for (size_t ln = 0; ln < maxH; ++ln) {
+        
+        for (size_t ln = 0; ln < CARD_HEIGHT; ++ln) {
             std::ostringstream line;
             for (size_t i = start; i < end; ++i) {
                 const auto& card = row[i];
-                if (ln < card.size()) {
-                    line << card[ln];
-                } else {
-                    line << std::string(card.front().size(), ' ');
-                }
+                line << card[ln];
             }
             out.push_back(line.str());
         }
