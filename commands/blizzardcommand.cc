@@ -18,6 +18,9 @@ void BlizzardCommand::execute(Game& game) {
                 // deal 2 damage to each minion
                 minion->setDefense(minion->getDefense() - 2);
                 if (minion->getDefense() <= 0) {
+                    if (minion == game.getLastPlayedMinion()) {
+                        game.setLastPlayedMinion(nullptr);
+                    }
                     // player->killMinion(i);, i dont want to modify the board while iterating through it
                     deadMinions.push_back(i);
                 }

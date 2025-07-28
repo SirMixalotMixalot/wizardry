@@ -17,5 +17,8 @@ void UnsummonCommand::execute(Game& game) {
     }
 
     // move the minion to the player's hand
+    if (minion == game.getLastPlayedMinion()) {
+        game.setLastPlayedMinion(nullptr);
+    }
     targetPlayer->returnMinionToHand(index);
 }

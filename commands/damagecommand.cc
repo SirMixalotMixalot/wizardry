@@ -14,6 +14,9 @@ void DamageCommand::execute(Game& game) {
             int index = activePlayer->getBoard()->getSize() - 1;
             activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() - damage);
             if (activePlayer->getMinion(index)->getDefense() <= 0) {
+                if (activePlayer->getMinion(index) == game.getLastPlayedMinion()) {
+                    game.setLastPlayedMinion(nullptr);
+                }
                 activePlayer->killMinion(index);
             }
         }
