@@ -37,6 +37,9 @@ void Player::playCard(int index, int targetPlayer, int targetCard) {
     if (magic < card->getCost()) {
         throw std::runtime_error("Not enough magic to play this card");
     }
+    if (dynamic_cast<Minion*>(card) && board->getSize() >= Board::MAX_BOARD_SIZE) {
+        throw std::runtime_error("Cannot play minion, board is full");
+    }
 
     if (dynamic_cast<Enchantment*>(card))
     {
