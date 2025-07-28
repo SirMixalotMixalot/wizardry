@@ -21,11 +21,15 @@ void GainStatsCommand::execute(Game& game) {
         }
     } else {
         if (game.getActivePlayer() == owner) {
-            activePlayer->getMinion(index)->setAttack(activePlayer->getMinion(index)->getAttack() + attack);
-            activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() + defense);
+            if (activePlayer->getMinion(index)) {
+                activePlayer->getMinion(index)->setAttack(activePlayer->getMinion(index)->getAttack() + attack);
+                activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() + defense);
+            }
         } else {
-            inactivePlayer->getMinion(index)->setAttack(inactivePlayer->getMinion(index)->getAttack() + attack);
-            inactivePlayer->getMinion(index)->setDefense(inactivePlayer->getMinion(index)->getDefense() + defense);
+            if (inactivePlayer->getMinion(index)) {
+                inactivePlayer->getMinion(index)->setAttack(inactivePlayer->getMinion(index)->getAttack() + attack);
+                inactivePlayer->getMinion(index)->setDefense(inactivePlayer->getMinion(index)->getDefense() + defense);
+            }
         }
     }
 }
