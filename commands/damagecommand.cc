@@ -11,13 +11,20 @@ void DamageCommand::execute(Game& game) {
 
     if (owner == inactivePlayer) {
         if (activePlayer->getBoard()->getSize() > 0) {
-            int index = activePlayer->getBoard()->getSize() - 1;
-            activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() - damage);
-            if (activePlayer->getMinion(index)->getDefense() <= 0) {
-                if (activePlayer->getMinion(index) == game.getLastPlayedMinion()) {
-                    game.setLastPlayedMinion(nullptr);
+            int index = -1;
+            for (int i = 0; i < activePlayer->getBoard()->getSize(); i++) {
+                if (activePlayer->getMinion(i) == game.getLastPlayedMinion()) {
+                    index = i;
                 }
-                activePlayer->killMinion(index);
+            }
+            if (index != -1) {
+                activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() - damage);
+                if (activePlayer->getMinion(index)->getDefense() <= 0) {
+                    if (activePlayer->getMinion(index) == game.getLastPlayedMinion()) {
+                        game.setLastPlayedMinion(nullptr);
+                    }
+                    activePlayer->killMinion(index);
+                }
             }
         }
     }  
