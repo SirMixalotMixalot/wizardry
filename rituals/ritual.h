@@ -15,9 +15,9 @@ class Ritual : public Card {
         Ritual (string name, Player* owner, string description, int cost, unique_ptr<TriggeredAbility> ability, int activationCost, int numCharges);
         virtual ~Ritual() = 0;
 
-        TriggeredAbility* getTriggeredAbility();
-        int getActivationCost();
-        int getNumberOfCharges();
+        TriggeredAbility* getTriggeredAbility() const;
+        int getActivationCost() const;
+        int getNumberOfCharges() const;
         void setNumberOfCharges(int numCharges);
 
         virtual unique_ptr<Command> use() override;

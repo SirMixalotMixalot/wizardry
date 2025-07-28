@@ -23,7 +23,7 @@ Player* Game::getInactivePlayer() const {
     return inactivePlayer;
 }
 
-Player* Game::getPlayer(int index) {
+Player* Game::getPlayer(int index) const {
     if (index == 1) {
         return player1.get();
     } else if (index == 2) {
