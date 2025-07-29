@@ -159,14 +159,18 @@ void TextualDisplay::showBoard(const Game& game) {
         auto empty = CARD_TEMPLATE_EMPTY;
         auto p1Card = display_player_card(1, p1->getName(), p1->getHealth(), p1->getMagic());
         auto ritual = CARD_TEMPLATE_BORDER;
-        auto border = CARD_TEMPLATE_BORDER;
+        auto graveyard = CARD_TEMPLATE_BORDER;
         if (Ritual* ritualptr = dynamic_cast<Ritual*>(p1->getBoard()->getRitual()))
         {
             ritual = display_ritual(ritualptr->getName(), ritualptr->getCost(),
             ritualptr->getActivationCost(), ritualptr->getDescription(),
             ritualptr->getNumberOfCharges());
         }
-        std::vector<card_template_t> row{border, empty, p1Card, empty, ritual};
+        if (Minion* m = dynamic_cast<Minion*>(p1->getGraveyard()->getLastCardAdded()))
+        {
+            graveyard = display_minion(m);
+        }
+        std::vector<card_template_t> row{ritual, empty, p1Card, empty, graveyard};
         auto lines = flattenRow(row);
         beforeGraphicinner.insert(beforeGraphicinner.end(), lines.begin(), lines.end());
     }
@@ -211,14 +215,18 @@ void TextualDisplay::showBoard(const Game& game) {
         auto empty = CARD_TEMPLATE_EMPTY;
         auto p2Card = display_player_card(2, p2->getName(), p2->getHealth(), p2->getMagic());
         auto ritual = CARD_TEMPLATE_BORDER;
-        auto border = CARD_TEMPLATE_BORDER;
+        auto graveyard = CARD_TEMPLATE_BORDER;
         if (Ritual* ritualptr = dynamic_cast<Ritual*>(p2->getBoard()->getRitual()))
         {
             ritual = display_ritual(ritualptr->getName(), ritualptr->getCost(),
             ritualptr->getActivationCost(), ritualptr->getDescription(),
             ritualptr->getNumberOfCharges());
         }
-        std::vector<card_template_t> row{ritual, empty, p2Card, empty, border};
+        if (Minion* m = dynamic_cast<Minion*>(p2->getGraveyard()->getLastCardAdded()))
+        {
+            graveyard = display_minion(m);
+        }
+        std::vector<card_template_t> row{ritual, empty, p2Card, empty, graveyard};
         auto lines = flattenRow(row);
         afterGraphicinner.insert(afterGraphicinner.end(), lines.begin(), lines.end());
     }

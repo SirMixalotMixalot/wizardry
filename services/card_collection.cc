@@ -29,3 +29,11 @@ Card* CardCollection::getCard(int index) const {
 int CardCollection::getSize() const {
     return cards.size();
 }
+Card* CardCollection::getLastCardAdded() const 
+{
+    if (cards.size() < 1)
+    {
+        return nullptr;
+    }
+    return cards.back().get();
+}
