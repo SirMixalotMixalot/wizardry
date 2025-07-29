@@ -36,3 +36,8 @@ void Board::removeEnchantment(int targetMinion) {
     }
 }
 
+void Board::destroyCard(int index)
+{
+    cards.erase(cards.begin() + index);
+}
+

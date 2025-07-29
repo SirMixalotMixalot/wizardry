@@ -13,6 +13,7 @@ class Board : public CardCollection {
         Board();
         ~Board() override = default;
 
+        void destroyCard(int index);
         Card* getRitual();
         void setRitual(unique_ptr<Card> ritual); 
         void applyEnchantment(std::unique_ptr<Enchantment> enchantment, int minionIndex);

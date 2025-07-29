@@ -14,7 +14,7 @@ void BanishCommand::execute(Game& game) {
     else 
     {
         // destroy minion
-        targetPlayer->discardCard(targetCard);
+        targetPlayer->getBoard()->destroyCard(targetCard);
     }
 
 
