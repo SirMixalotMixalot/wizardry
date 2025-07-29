@@ -3,7 +3,7 @@
 #include "player.h"
 #include "minion.h"
 #include <vector>
-
+#include <algorithm>
 using namespace std;
 
 void BlizzardCommand::execute(Game& game) {
@@ -26,9 +26,11 @@ void BlizzardCommand::execute(Game& game) {
                 }
             }
         }
-        // now kill all dead minions
-        for (int index : deadMinions) {
-            player->killMinion(index);
+        // now kill all dead minions in reverse order of index
+        std::sort(deadMinions.begin(), deadMinions.end());
+        for (auto it = deadMinions.rbegin(); it != deadMinions.rend(); it++)
+        {
+            player->killMinion(*it);
         }
     }
 }
