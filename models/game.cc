@@ -74,10 +74,11 @@ void Game::attack(int index) {
     Minion* minion = activePlayer->getMinion(index);
     if (minion != nullptr && minion->getActions() > 0) {
         inactivePlayer->setHealth(inactivePlayer->getHealth() - minion->getAttack());
-        // minion->setActions(minion->getActions() - 1);
-        unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
-        int playerNumber = getPlayerNumber(activePlayer);
-        applyEnchantment(move(actionsModifier), playerNumber, index);
+        minion->setActions(minion->getActions() - 1);
+        cout << "Minion actions: " << minion->getActions() << endl;
+        // unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
+        // int playerNumber = getPlayerNumber(activePlayer);
+        // applyEnchantment(move(actionsModifier), playerNumber, index);
     }
 }
 
@@ -85,9 +86,10 @@ void Game::attack(int index, int targetIndex) {
     Minion* minion = activePlayer->getMinion(index);
     Minion* target = inactivePlayer->getMinion(targetIndex);
     if (minion != nullptr && target != nullptr && minion->getActions() > 0) {
-        // minion->setActions(minion->getActions() - 1);
-        unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
-        applyEnchantment(move(actionsModifier), getPlayerNumber(activePlayer), index);
+        minion->setActions(minion->getActions() - 1);
+        cout << "Minion actions: " << minion->getActions() << endl;
+        // unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
+        // applyEnchantment(move(actionsModifier), getPlayerNumber(activePlayer), index);
 
         // target->setDefense(target->getDefense() - minion->getAttack());
         // minion->setDefense(minion->getDefense() - target->getAttack());
