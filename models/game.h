@@ -42,7 +42,6 @@ class Game {
         void useMinion(int index, int targetPlayer, int targetCard); // target player and card
         Minion* getLastPlayedMinion();
         void setLastPlayedMinion(Minion* minion);
-        Minion* inspectMinion(int index);
 
         Hand* getHand(); // for display
 

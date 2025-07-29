@@ -131,8 +131,6 @@ void Game::setLastPlayedMinion(Minion* minion) {
     lastPlayedMinion = minion;
 }
 
-Minion* Game::inspectMinion(int index) {}
-
 Hand* Game::getHand() {
     return activePlayer->getHand();
 }

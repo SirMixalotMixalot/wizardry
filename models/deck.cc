@@ -19,7 +19,7 @@ Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {
     string line;
     while (getline(file, line)) {
         try {
-            unique_ptr<Card> card = CardFactory::createCard(line, owner);
+            unique_ptr<Card> card = CardFactory::createCard(line, this->owner);
             if (card) {
                 cards.push_back(move(card));
             } else {

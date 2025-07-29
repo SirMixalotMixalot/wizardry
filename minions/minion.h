@@ -12,8 +12,8 @@ class Minion : public Card {
     int defense;
     int actions;
 
-    unique_ptr<TriggeredAbility> triggeredAbility;
     unique_ptr<ActivatedAbility> activatedAbility;
+    unique_ptr<TriggeredAbility> triggeredAbility;
 
     public:
         Minion(string name, Player* owner, string description, int cost, int attack, int defense, unique_ptr<ActivatedAbility> activatedAbility = nullptr, unique_ptr<TriggeredAbility> triggeredAbility = nullptr);
