@@ -22,8 +22,8 @@ class Minion : public Card {
         virtual int getAttack() const;
         virtual int getDefense() const;
         virtual int getActions() const;
-        TriggeredAbility* getTriggeredAbility() const;
-        ActivatedAbility* getActivatedAbility() const;
+        virtual TriggeredAbility* getTriggeredAbility() const;
+        virtual ActivatedAbility* getActivatedAbility() const;
         virtual int getActivatedAbilityCost() const;
         virtual bool canUseAbilities() const = 0;
 

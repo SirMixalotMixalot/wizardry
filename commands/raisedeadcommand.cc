@@ -2,6 +2,8 @@
 #include "game.h"
 #include "minion.h"
 #include "statsetter.h"
+#include <iostream>
+using namespace std;
 
 void RaiseDeadCommand::execute(Game& game) {
     Player* activePlayer = game.getActivePlayer();
@@ -31,5 +33,9 @@ void RaiseDeadCommand::execute(Game& game) {
     unique_ptr<Minion> base(static_cast<Minion*>(card.release()));
     statSetter->setNext(move(base));
 
+    game.setLastPlayedMinion(statSetter.get());
+    cout << game.getLastPlayedMinion() << endl;
+    cout << game.getLastPlayedMinion()->getName() << endl;
     activePlayer->getBoard()->addCard(move(statSetter));
+    game.trigger(Triggers::MINION_ENTERS_PLAY);
 }

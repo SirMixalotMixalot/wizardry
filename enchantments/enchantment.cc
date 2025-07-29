@@ -38,6 +38,14 @@ int Enchantment::getActions() const {
     return next->getActions();
 }
 
+TriggeredAbility* Enchantment::getTriggeredAbility() const {
+    return next->getTriggeredAbility();
+}
+
+ActivatedAbility* Enchantment::getActivatedAbility() const {
+    return next->getActivatedAbility();
+}
+
 int Enchantment::getActivatedAbilityCost() const {
     return next->getActivatedAbilityCost();
 }

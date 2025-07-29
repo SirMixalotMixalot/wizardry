@@ -31,11 +31,10 @@ void BlizzardCommand::execute(Game& game) {
                 }
             }
         }
-        // now kill all dead minions in reverse order of index
-        std::sort(deadMinions.begin(), deadMinions.end());
-        for (auto it = deadMinions.rbegin(); it != deadMinions.rend(); it++)
-        {
-            player->killMinion(*it);
+        // now kill all dead minions in order of index
+        for (size_t i = 0; i <  deadMinions.size(); ++i) {
+            int idx = deadMinions[i] - i;
+            player->killMinion(idx);
         }
     }
 }

@@ -58,8 +58,8 @@ void Game::startTurn() {
 
 void Game::endTurn() {
     // end of turn effects trigger
-    switchActivePlayer();
     trigger(Triggers::END_OF_TURN);
+    switchActivePlayer();
 }
 
 void Game::draw() {
@@ -161,14 +161,23 @@ void Game::notify(unique_ptr<Command> command) {
 }
 
 void Game::trigger(Triggers trigger) {
+    cout << "active player trigger" << endl;
     activePlayer->trigger(trigger);
     if (trigger == Triggers::MINION_ENTERS_PLAY || trigger == Triggers::MINION_LEAVES_PLAY) {
+        cout << "inactive player trigger" << endl;
         inactivePlayer->trigger(trigger);
     }
 }
 
 void Game::applyEnchantment(std::unique_ptr<Enchantment> ench, int player, int idx) {
     Player* targetPlayer = getPlayer(player);
+    bool lastFlag = false;
+    if (targetPlayer->getMinion(idx) == lastPlayedMinion) {
+        lastFlag = true;
+    }
     targetPlayer->getBoard()->applyEnchantment(std::move(ench), idx);
+    if (lastFlag) {
+        lastPlayedMinion = targetPlayer->getMinion(idx);
+    }
 }
 

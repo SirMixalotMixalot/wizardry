@@ -27,6 +27,8 @@ class Enchantment : public Minion {
         int getAttack() const override;
         int getDefense() const override;
         int getActions() const override;
+        TriggeredAbility* getTriggeredAbility() const override;
+        ActivatedAbility* getActivatedAbility() const override;
         int getActivatedAbilityCost() const override;
         bool canUseAbilities() const override;
 
