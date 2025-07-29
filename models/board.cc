@@ -28,11 +28,29 @@ void Board::applyEnchantment(std::unique_ptr<Enchantment> ench, int idx) {
 void Board::removeEnchantment(int targetMinion) {
     
     auto& slot = cards.at(targetMinion);
-    Enchantment* enchantment = dynamic_cast<Enchantment*>(slot.get());
+    Enchantment* firstEnchantment = dynamic_cast<Enchantment*>(slot.get());
     
-    if (enchantment) {
-        auto nextMinion = enchantment->releaseNext();
-        slot = move(nextMinion);
+    // if (enchantment) {
+    //     auto nextMinion = enchantment->releaseNext();
+    //     slot = move(nextMinion);
+    // }
+    Enchantment* previousEnchantment = nullptr;
+    Enchantment* enchantment = firstEnchantment;
+    while (enchantment) {
+        if (enchantment->displayableEnchantment()) { // Enchantment is a real enchantment that was played by the user
+            if (previousEnchantment) {
+                previousEnchantment->setNext(enchantment->releaseNext());
+            } 
+            else {
+                slot = enchantment->releaseNext();
+            }
+            break; // Only remove the first enchantment
+        }
+        else {
+            // Go to next
+            previousEnchantment = enchantment;
+            enchantment = dynamic_cast<Enchantment*>(const_cast<Minion*>(enchantment->getNext()));
+        }
     }
 }
 

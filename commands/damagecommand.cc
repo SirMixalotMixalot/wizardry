@@ -2,6 +2,7 @@
 #include "game.h"
 #include "player.h"
 #include "minion.h"
+#include "statmodifier.h"
 
 DamageCommand::DamageCommand(Player* owner, int damage) : owner(owner), damage(damage) {}
 
@@ -18,7 +19,10 @@ void DamageCommand::execute(Game& game) {
                 }
             }
             if (index != -1) {
-                activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() - damage);
+                // activePlayer->getMinion(index)->setDefense(activePlayer->getMinion(index)->getDefense() - damage);
+                unique_ptr<StatModifier> defenseModifier = make_unique<StatModifier>(activePlayer, nullptr, 0, -damage);
+                game.applyEnchantment(move(defenseModifier), game.getPlayerNumber(activePlayer), index);
+                
                 if (activePlayer->getMinion(index)->getDefense() <= 0) {
                     if (activePlayer->getMinion(index) == game.getLastPlayedMinion()) {
                         game.setLastPlayedMinion(nullptr);

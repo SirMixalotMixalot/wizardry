@@ -2,6 +2,7 @@
 #define COMMAND_H
 
 #include "enums.h"
+#include <memory>
 
 class Command {
     public:

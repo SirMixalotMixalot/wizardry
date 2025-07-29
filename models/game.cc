@@ -3,6 +3,8 @@
 #include "minion.h"
 #include "player.h"
 #include "enchantment.h"
+#include "statmodifier.h"
+#include "actionsmodifier.h"
 #include <memory>
 #include <iostream>
 
@@ -21,6 +23,10 @@ Player* Game::getActivePlayer() const {
 
 Player* Game::getInactivePlayer() const {
     return inactivePlayer;
+}
+
+int Game::getPlayerNumber(Player* player) const {
+    return (player == player1.get()) ? 1 : 2;
 }
 
 Player* Game::getPlayer(int index) const {
@@ -68,7 +74,10 @@ void Game::attack(int index) {
     Minion* minion = activePlayer->getMinion(index);
     if (minion != nullptr && minion->getActions() > 0) {
         inactivePlayer->setHealth(inactivePlayer->getHealth() - minion->getAttack());
-        minion->setActions(minion->getActions() - 1);
+        // minion->setActions(minion->getActions() - 1);
+        unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
+        int playerNumber = getPlayerNumber(activePlayer);
+        applyEnchantment(move(actionsModifier), playerNumber, index);
     }
 }
 
@@ -76,9 +85,17 @@ void Game::attack(int index, int targetIndex) {
     Minion* minion = activePlayer->getMinion(index);
     Minion* target = inactivePlayer->getMinion(targetIndex);
     if (minion != nullptr && target != nullptr && minion->getActions() > 0) {
-        minion->setActions(minion->getActions() - 1);
-        target->setDefense(target->getDefense() - minion->getAttack());
-        minion->setDefense(minion->getDefense() - target->getAttack());
+        // minion->setActions(minion->getActions() - 1);
+        unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
+        applyEnchantment(move(actionsModifier), getPlayerNumber(activePlayer), index);
+
+        // target->setDefense(target->getDefense() - minion->getAttack());
+        // minion->setDefense(minion->getDefense() - target->getAttack());
+        unique_ptr<StatModifier> targetDefenseModifier = make_unique<StatModifier>(inactivePlayer, nullptr, 0, -minion->getAttack());
+        applyEnchantment(move(targetDefenseModifier), getPlayerNumber(inactivePlayer), targetIndex);
+        unique_ptr<StatModifier> minionDefenseModifier = make_unique<StatModifier>(activePlayer, nullptr, 0, -target->getAttack());
+        applyEnchantment(move(minionDefenseModifier), getPlayerNumber(activePlayer), index);
+
         // apnap order
         if (minion->getDefense() <= 0) {
             activePlayer->killMinion(index);
