@@ -2,7 +2,7 @@
 #include "card.h"
 #include <fstream>
 #include <iostream>
-#include "services/card_factory.h"
+#include "card_factory.h"
 #include <memory>
 #include <algorithm>
 #include <random>
