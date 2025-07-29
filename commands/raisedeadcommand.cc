@@ -34,8 +34,7 @@ void RaiseDeadCommand::execute(Game& game) {
     statSetter->setNext(move(base));
 
     game.setLastPlayedMinion(statSetter.get());
-    cout << game.getLastPlayedMinion() << endl;
-    cout << game.getLastPlayedMinion()->getName() << endl;
+
     activePlayer->getBoard()->addCard(move(statSetter));
     game.trigger(Triggers::MINION_ENTERS_PLAY);
 }

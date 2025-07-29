@@ -161,10 +161,8 @@ void Game::notify(unique_ptr<Command> command) {
 }
 
 void Game::trigger(Triggers trigger) {
-    cout << "active player trigger" << endl;
     activePlayer->trigger(trigger);
     if (trigger == Triggers::MINION_ENTERS_PLAY || trigger == Triggers::MINION_LEAVES_PLAY) {
-        cout << "inactive player trigger" << endl;
         inactivePlayer->trigger(trigger);
     }
 }
