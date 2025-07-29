@@ -70,6 +70,6 @@ unique_ptr<Minion> Enchantment::releaseNext() {
     return move(next);
 }
 
-bool Enchantment::displayableEnchantment() {
+bool Enchantment::displayableEnchantment() const {
     return displayable;
 }

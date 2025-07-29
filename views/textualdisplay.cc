@@ -61,8 +61,10 @@ void TextualDisplay::inspect(const Minion& minion) {
     while (current) {
 
         // create current enchantment template and then display it
-        card_template_t enchantmentTemplate = displaEnchantment(current);
-        enchantmentLines.push_back(enchantmentTemplate);
+        if (current->displayableEnchantment()) {
+            card_template_t enchantmentTemplate = displaEnchantment(current);
+            enchantmentLines.push_back(enchantmentTemplate);
+        }
         // move to the next enchantment
         nextMinion =  current->getNext();
         current = dynamic_cast<const Enchantment*>(nextMinion);

@@ -37,7 +37,7 @@ class Enchantment : public Minion {
         virtual void setNext(unique_ptr<Minion> nextMinion);
         const Minion* getNext() const;
         unique_ptr<Minion> releaseNext();
-        virtual bool displayableEnchantment();
+        virtual bool displayableEnchantment() const;
 };
 
 #endif
