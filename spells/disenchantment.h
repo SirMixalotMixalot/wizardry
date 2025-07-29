@@ -1,5 +1,5 @@
 #ifndef DISENCHANTMENT_H
-#define DISENCAHNTMENT_H
+#define DISENCHANTMENT_H
 
 #include "spell.h"
 

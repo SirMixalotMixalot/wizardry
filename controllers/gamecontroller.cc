@@ -67,6 +67,10 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         getline(cin, name1);
         getline(cin, name2);
         game = make_unique<Game>(name1, name2, deck1File, deck2File);
+        if (!testFlag) {
+            game->getActivePlayer()->getDeck()->shuffle();
+            game->getInactivePlayer()->getDeck()->shuffle();
+        }
         start();
     }
 

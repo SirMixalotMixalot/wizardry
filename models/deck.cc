@@ -4,6 +4,9 @@
 #include <iostream>
 #include "services/card_factory.h"
 #include <memory>
+#include <algorithm>
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -40,7 +43,11 @@ unique_ptr<Card> Deck::draw() {
     }
 }
 
-void Deck::shuffle() {}
+void Deck::shuffle() {
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+    default_random_engine rng{seed};
+    std::shuffle(cards.begin(), cards.end(), rng);
+}
 
 
 bool Deck::isEmpty() const {
