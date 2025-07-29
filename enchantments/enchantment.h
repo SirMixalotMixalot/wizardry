@@ -8,11 +8,12 @@ using namespace std;
 class Enchantment : public Minion {
     string attackModifier;
     string defenseModifier;
+    bool displayable;
 
     protected:
         unique_ptr<Minion> next;
     public:
-        Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, unique_ptr<Minion> next);
+        Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, unique_ptr<Minion> next, bool displayable = true);
         ~Enchantment() override = 0;
 
         string getAttackModifier() const;
@@ -36,6 +37,7 @@ class Enchantment : public Minion {
         virtual void setNext(unique_ptr<Minion> nextMinion);
         const Minion* getNext() const;
         unique_ptr<Minion> releaseNext();
+        virtual bool displayableEnchantment();
 };
 
 #endif
