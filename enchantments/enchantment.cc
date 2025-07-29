@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Enchantment::Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, unique_ptr<Minion> next) : Minion(name, owner, description, cost, 0, 0, nullptr), attackModifier(attackModifier), defenseModifier(defenseModifier), next(std::move(next)) {}
+Enchantment::Enchantment(string name, Player* owner, string description, int cost, string attackModifier, string defenseModifier, unique_ptr<Minion> next, bool displayable) : Minion(name, owner, description, cost, 0, 0, nullptr), attackModifier(attackModifier), defenseModifier(defenseModifier), next(std::move(next)), displayable(displayable) {}
 
 Enchantment::~Enchantment() = default;
 
@@ -68,4 +68,8 @@ const Minion* Enchantment::getNext() const {
 
 unique_ptr<Minion> Enchantment::releaseNext() {
     return move(next);
+}
+
+bool Enchantment::displayableEnchantment() {
+    return displayable;
 }
