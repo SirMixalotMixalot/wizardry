@@ -2,6 +2,7 @@
 #include "game.h"
 #include "player.h"
 #include "minion.h"
+#include "statmodifier.h"
 #include <vector>
 
 using namespace std;
@@ -16,7 +17,10 @@ void BlizzardCommand::execute(Game& game) {
             Minion* minion = player->getMinion(i);
             if (minion) {
                 // deal 2 damage to each minion
-                minion->setDefense(minion->getDefense() - 2);
+                // minion->setDefense(minion->getDefense() - 2);
+                unique_ptr<StatModifier> defenseModifier = make_unique<StatModifier>(player, nullptr, 0, -2);
+                game.applyEnchantment(move(defenseModifier), game.getPlayerNumber(player), i);
+
                 if (minion->getDefense() <= 0) {
                     if (minion == game.getLastPlayedMinion()) {
                         game.setLastPlayedMinion(nullptr);

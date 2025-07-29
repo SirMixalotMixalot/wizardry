@@ -22,6 +22,7 @@ class Game {
         
         Player* getActivePlayer() const;
         Player* getInactivePlayer() const;
+        int getPlayerNumber(Player* player) const;
         void switchActivePlayer();
         void startTurn();
         void endTurn();

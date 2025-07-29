@@ -1,6 +1,7 @@
 #include "damageminioncommand.h"
 #include "game.h"
 #include "minion.h"
+#include "statmodifier.h"
 
 DamageMinionCommand::DamageMinionCommand(int target, bool player1, int damage) : targetCard(target), damagePlayer1(player1), damage(damage) {}
 
@@ -17,7 +18,10 @@ void DamageMinionCommand::execute(Game& game) {
     }
 
     // Apply damage to the minion, kill if defense is less than or equal to 0
-    minion->setDefense(minion->getDefense() - damage);
+    // minion->setDefense(minion->getDefense() - damage);
+    unique_ptr<StatModifier> defenseModifier = make_unique<StatModifier>(targetPlayer, nullptr, 0, -damage);
+    game.applyEnchantment(move(defenseModifier), game.getPlayerNumber(targetPlayer), targetCard);
+    
     if (minion->getDefense() <= 0) {
         targetPlayer->killMinion(targetCard);
     }

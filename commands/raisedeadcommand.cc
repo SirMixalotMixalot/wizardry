@@ -1,6 +1,8 @@
 #include "raisedeadcommand.h"
 #include "game.h"
 #include "minion.h"
+#include "statsetter.h"
+
 void RaiseDeadCommand::execute(Game& game) {
     Player* activePlayer = game.getActivePlayer();
 
@@ -24,7 +26,10 @@ void RaiseDeadCommand::execute(Game& game) {
         throw std::runtime_error("Card is not a minion.");
     }
 
-    minion->setDefense(1);
+    // minion->setDefense(1);
+    unique_ptr<StatSetter> statSetter = make_unique<StatSetter>(activePlayer, nullptr, minion->getAttack(), 1);
+    unique_ptr<Minion> base(static_cast<Minion*>(card.release()));
+    statSetter->setNext(move(base));
 
-    activePlayer->getBoard()->addCard(move(card));
+    activePlayer->getBoard()->addCard(move(statSetter));
 }
