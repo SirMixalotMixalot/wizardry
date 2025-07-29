@@ -21,6 +21,7 @@ void BlizzardCommand::execute(Game& game) {
                 unique_ptr<StatModifier> defenseModifier = make_unique<StatModifier>(player, nullptr, 0, -2);
                 game.applyEnchantment(move(defenseModifier), game.getPlayerNumber(player), i);
 
+                minion = player->getMinion(i); // re-fetch minion after applying enchantment
                 if (minion->getDefense() <= 0) {
                     if (minion == game.getLastPlayedMinion()) {
                         game.setLastPlayedMinion(nullptr);

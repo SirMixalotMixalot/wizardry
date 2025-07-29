@@ -96,6 +96,8 @@ void Game::attack(int index, int targetIndex) {
         unique_ptr<StatModifier> minionDefenseModifier = make_unique<StatModifier>(activePlayer, nullptr, 0, -target->getAttack());
         applyEnchantment(move(minionDefenseModifier), getPlayerNumber(activePlayer), index);
 
+        minion = activePlayer->getMinion(index);
+        target = inactivePlayer->getMinion(targetIndex);
         // apnap order
         if (minion->getDefense() <= 0) {
             activePlayer->killMinion(index);

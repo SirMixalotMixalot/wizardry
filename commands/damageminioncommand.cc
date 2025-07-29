@@ -22,6 +22,7 @@ void DamageMinionCommand::execute(Game& game) {
     unique_ptr<StatModifier> defenseModifier = make_unique<StatModifier>(targetPlayer, nullptr, 0, -damage);
     game.applyEnchantment(move(defenseModifier), game.getPlayerNumber(targetPlayer), targetCard);
     
+    minion = targetPlayer->getMinion(targetCard); // re-fetch minion after applying enchantment
     if (minion->getDefense() <= 0) {
         targetPlayer->killMinion(targetCard);
     }
