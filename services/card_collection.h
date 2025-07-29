@@ -17,6 +17,7 @@ class CardCollection {
         void addCard(unique_ptr<Card> card);
         unique_ptr<Card> removeCard(int index);
         Card* getCard(int index) const;
+        Card* getLastCardAdded() const;
         int getSize() const;
 };
 
