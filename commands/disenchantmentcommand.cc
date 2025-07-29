@@ -12,4 +12,7 @@ void DisenchantmentCommand::execute(Game& game) {
     }
 
     player->removeEnchantment(targetCard);
+    if (player->getMinion(targetCard)->getDefense() <= 0) {
+        player->killMinion(targetCard);
+    }
 }
