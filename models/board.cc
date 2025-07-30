@@ -54,6 +54,25 @@ void Board::removeEnchantment(int targetMinion) {
     }
 }
 
+void Board::removeAllEnchantments(int targetMinion) {
+    auto& slot = cards.at(targetMinion);
+    Enchantment* firstEnchantment = dynamic_cast<Enchantment*>(slot.get());
+    Enchantment* previousEnchantment = nullptr;
+    Enchantment* enchantment = firstEnchantment;
+    while (enchantment) {
+        if (enchantment->displayableEnchantment()) { // Enchantment is a real enchantment that was played by the user
+            if (previousEnchantment) {
+                previousEnchantment->setNext(enchantment->releaseNext());
+            } 
+            else {
+                slot = enchantment->releaseNext();
+            }
+        }
+        previousEnchantment = enchantment;
+        enchantment = dynamic_cast<Enchantment*>(const_cast<Minion*>(enchantment->getNext()));
+    }
+}
+
 void Board::destroyCard(int index)
 {
     cards.erase(cards.begin() + index);
