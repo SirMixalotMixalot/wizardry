@@ -97,11 +97,11 @@ void Game::attack(int index, int targetIndex) {
         applyEnchantment(move(minionDefenseModifier), getPlayerNumber(activePlayer), index);
 
         minion = activePlayer->getMinion(index);
-        target = inactivePlayer->getMinion(targetIndex);
         // apnap order
         if (minion->getDefense() <= 0) {
             activePlayer->killMinion(index);
         }
+        target = inactivePlayer->getMinion(targetIndex);
         if (target->getDefense() <= 0) {
             inactivePlayer->killMinion(targetIndex);
         }
