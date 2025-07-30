@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Game::Game(string name1, string name2, string deck1File, string deck2File) {
+Game::Game(string name1, string name2, string deck1File, string deck2File, bool testFlag) : testFlag(testFlag) {
     player1 = make_unique<Player>(name1, deck1File, this);
     player2 = make_unique<Player>(name2, deck2File, this);
     activePlayer = player1.get();
@@ -118,7 +118,10 @@ void Game::playCard(int index, int targetPlayer, int targetCard) {
 
 void Game::useMinion(int index) {
     Minion* minion = activePlayer->getMinion(index);
-    if (minion != nullptr && minion->canUseAbilities() && minion->getActions() > 0 && activePlayer->getMagic() >= minion->getActivatedAbilityCost()) {
+    if (minion != nullptr && minion->canUseAbilities() && minion->getActions() > 0 && (testFlag || activePlayer->getMagic() >= minion->getActivatedAbilityCost())) {
+        if (activePlayer->getMagic() < minion->getActivatedAbilityCost() && testFlag) {
+            activePlayer->setMagic(minion->getActivatedAbilityCost());
+        }
         unique_ptr<Command> command = minion->use();
         notify(move(command)); // call Game.notify with the command
         minion->setActions(minion->getActions() - 1);
@@ -131,7 +134,10 @@ void Game::useMinion(int index) {
 
 void Game::useMinion(int index, int targetPlayer, int targetCard) { // NOTE: This method shares a lot of code with the previous one and can probably be combined in the future.
     Minion* minion = activePlayer->getMinion(index);
-    if (minion != nullptr && minion->canUseAbilities() && minion->getActions() > 0 && activePlayer->getMagic() >= minion->getActivatedAbilityCost()) {
+    if (minion != nullptr && minion->canUseAbilities() && minion->getActions() > 0 && (testFlag || activePlayer->getMagic() >= minion->getActivatedAbilityCost())) {
+        if (activePlayer->getMagic() < minion->getActivatedAbilityCost() && testFlag) {
+            activePlayer->setMagic(minion->getActivatedAbilityCost());
+        }
         unique_ptr<Command> command = minion->use(targetPlayer, targetCard);
         notify(move(command)); // call Game.notify with the command
         minion->setActions(minion->getActions() - 1);
@@ -177,3 +183,6 @@ void Game::applyEnchantment(std::unique_ptr<Enchantment> ench, int player, int i
     }
 }
 
+bool Game::testFlagEnabled() const {
+    return testFlag;
+}

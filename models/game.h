@@ -15,9 +15,10 @@ class Game {
     Player* activePlayer;
     Player* inactivePlayer;
     Minion* lastPlayedMinion = nullptr;
+    bool testFlag;
 
     public:
-        Game(string name1, string name2, string deck1File, string deck2File);
+        Game(string name1, string name2, string deck1File, string deck2File, bool testFlag);
         ~Game() = default;
         
         Player* getActivePlayer() const;
@@ -52,6 +53,8 @@ class Game {
 
         Player* getPlayer(int index) const; // player access
         void applyEnchantment(unique_ptr<Enchantment> enchantment,int player, int minionIndex);
+
+        bool testFlagEnabled() const;
 };
 
 #endif

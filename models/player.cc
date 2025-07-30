@@ -34,7 +34,7 @@ void Player::playCard(int index, int targetPlayer, int targetCard) {
     }
 
     Card* card = hand->getCard(index);
-    if (magic < card->getCost()) {
+    if (magic < card->getCost() && !(game->testFlagEnabled() && dynamic_cast<Spell*>(card))) {
         throw std::runtime_error("Not enough magic to play this card");
     }
     if (dynamic_cast<Minion*>(card) && board->getSize() >= Board::MAX_BOARD_SIZE) {
@@ -58,6 +58,10 @@ void Player::playCard(int index, int targetPlayer, int targetCard) {
         } else {
             // use the card with a target player and target card
             command = card->use(targetPlayer, targetCard);
+        }
+
+        if (magic < card->getCost() && game->testFlagEnabled()) {
+            magic = card->getCost();
         }
 
         // notify the game with the command
