@@ -62,7 +62,7 @@ void TextualDisplay::inspect(const Minion& minion) {
 
         // create current enchantment template and then display it
         if (current->displayableEnchantment()) {
-            card_template_t enchantmentTemplate = displaEnchantment(current);
+            card_template_t enchantmentTemplate = displayEnchantment(current);
             enchantmentLines.push_back(enchantmentTemplate);
         }
         // move to the next enchantment
