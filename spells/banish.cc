@@ -4,7 +4,7 @@
 using namespace std;
 
 Banish::Banish(Player* owner)
-    : Spell("Banish", owner, "Destroy target minion or ritual (currently only minion)", 2) {}
+    : Spell("Banish", owner, "Destroy target minion or ritual", 2) {}
 
 unique_ptr<Command> Banish::use(int player, int targetCard) {    
     bool isPlayer1 = (player == 1);
