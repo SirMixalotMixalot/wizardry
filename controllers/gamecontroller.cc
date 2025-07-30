@@ -186,6 +186,11 @@ void GameController::discard(const string& args) {
     istringstream iss(args);
     int i;
     iss >> i;
+    if (!iss)
+    {
+        view->invalidCommand();
+        return;
+    }
     if (i < 1 || i > game->getActivePlayer()->getHand()->getSize()) {
         view->invalidCommand();
         return;
@@ -199,6 +204,11 @@ void GameController::attack(const string& args) {
     int i;
     int j;
     iss >> i;
+    if (!iss)
+    {
+        view->invalidCommand();
+        return;
+    }
 
     if (i < 1 || i > game->getActivePlayer()->getBoard()->getSize()) {
         view->invalidCommand();
@@ -223,6 +233,11 @@ void GameController::play(const string& args) {
     int t;
     string target_card;
     iss >> i;
+    if (!iss)
+    {
+        view->invalidCommand();
+        return;
+    }
 
     if (i < 1 || i > game->getActivePlayer()->getHand()->getSize()) {
         view->invalidCommand();
@@ -266,6 +281,11 @@ void GameController::use(const string& args) {
     int t;
     string target_card;
     iss >> i;
+    if (!iss)
+    {
+        view->invalidCommand();
+        return;
+    }
 
     if (i < 1 || i > game->getActivePlayer()->getBoard()->getSize()) {
         view->invalidCommand();
@@ -305,6 +325,11 @@ void GameController::describe(const string& args) {
     istringstream iss(args);
     int i;
     iss >> i;
+    if (!iss)
+    {
+        view->invalidCommand();
+        return;
+    }
     if (i > 0 && i <= game->getActivePlayer()->getBoard()->getSize()) {
         Minion* minion = dynamic_cast<Minion*>(game->getActivePlayer()->getBoard()->getCard(i - 1));
         if (minion) {
