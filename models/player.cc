@@ -161,9 +161,7 @@ void Player::killMinion(int index) {
         throw std::out_of_range("Invalid minion index");
     }
     game->trigger(Triggers::MINION_LEAVES_PLAY);
-    cout << "hi 1" << endl;
     board->removeAllEnchantments(index);
-    cout << "hi 2" << endl;
     auto card = board->removeCard(index);
     if (card) {
         Minion* minion = dynamic_cast<Minion*>(card.get());

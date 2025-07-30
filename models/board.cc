@@ -68,11 +68,8 @@ void Board::removeAllEnchantments(int targetMinion) {
                 slot = enchantment->releaseNext();
             }
         }
-        else {
-            // Go to next
-            previousEnchantment = enchantment;
-            enchantment = dynamic_cast<Enchantment*>(const_cast<Minion*>(enchantment->getNext()));
-        }
+        previousEnchantment = enchantment;
+        enchantment = dynamic_cast<Enchantment*>(const_cast<Minion*>(enchantment->getNext()));
     }
 }
 
