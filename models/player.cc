@@ -165,7 +165,7 @@ void Player::killMinion(int index) {
         throw std::out_of_range("Invalid minion index");
     }
     game->trigger(Triggers::MINION_LEAVES_PLAY);
-    board->removeAllEnchantments(index);
+    board->removeAllVisibleEnchantments(index);
     auto card = board->removeCard(index);
     if (card) {
         graveyard->addCard(move(card));

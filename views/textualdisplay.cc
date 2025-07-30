@@ -128,6 +128,11 @@ card_template_t TextualDisplay::display_minion(const Minion* minion) const {
     // if the minion is in enchanted, get the attack and defense from the enchanted minion but then display regularly
     int attack = minion->getAttack();
     int defense = minion->getDefense();
+    int activatedAbilityCost = 0;
+    if (minion->getActivatedAbility())
+    {
+        activatedAbilityCost = minion->getActivatedAbilityCost();
+    }
 
     while (auto enchantment = dynamic_cast<const Enchantment*>(minion)) {
         minion = enchantment->getNext();
@@ -135,7 +140,7 @@ card_template_t TextualDisplay::display_minion(const Minion* minion) const {
 
     if (minion->getActivatedAbility()) {
         return display_minion_activated_ability(minion->getName(), minion->getCost(), attack, defense,
-        minion->getActivatedAbilityCost(), minion->getActivatedAbility()->getDescription());
+        activatedAbilityCost, minion->getActivatedAbility()->getDescription());
     } else if (minion->getTriggeredAbility()) {
         return display_minion_triggered_ability(
             minion->getName(), minion->getCost(), attack, defense,

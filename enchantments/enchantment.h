@@ -35,6 +35,7 @@ class Enchantment : public Minion {
         void setAttack(int attack) override; // call next's setAttack()
         void setDefense(int defense) override; // call next's setDefense()
         void setActions(int actions) override; // call next's setActions()
+        std::unique_ptr<Minion>& ownNext();
 
         virtual void setNext(unique_ptr<Minion> nextMinion);
         const Minion* getNext() const;

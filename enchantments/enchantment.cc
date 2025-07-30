@@ -81,3 +81,8 @@ unique_ptr<Minion> Enchantment::releaseNext() {
 bool Enchantment::displayableEnchantment() const {
     return displayable;
 }
+
+std::unique_ptr<Minion>& Enchantment::ownNext()
+{ 
+    return next;
+}

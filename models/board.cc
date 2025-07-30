@@ -54,22 +54,32 @@ void Board::removeEnchantment(int targetMinion) {
     }
 }
 
-void Board::removeAllEnchantments(int targetMinion) {
-    auto& slot = cards.at(targetMinion);
-    Enchantment* firstEnchantment = dynamic_cast<Enchantment*>(slot.get());
-    Enchantment* previousEnchantment = nullptr;
-    Enchantment* enchantment = firstEnchantment;
-    while (enchantment) {
-        if (enchantment->displayableEnchantment()) { // Enchantment is a real enchantment that was played by the user
-            if (previousEnchantment) {
-                previousEnchantment->setNext(enchantment->releaseNext());
-            } 
-            else {
-                slot = enchantment->releaseNext();
-            }
+void Board::removeAllVisibleEnchantments(int idx)
+{
+
+    std::unique_ptr<Card>& slot = cards[idx];
+    std::unique_ptr<Card>* link = &slot;
+
+    while (auto* ench = dynamic_cast<Enchantment*>(link->get()))
+    {
+        if (ench->displayableEnchantment()) {
+            std::unique_ptr<Card> doomed = std::move(*link);
+            *link = ench->releaseNext();
+        } else {
+            link = reinterpret_cast<std::unique_ptr<Card>*>(&ench->ownNext());
         }
-        previousEnchantment = enchantment;
-        enchantment = dynamic_cast<Enchantment*>(const_cast<Minion*>(enchantment->getNext()));
+    }
+}
+
+void Board::removeAllEnchantments(int idx)
+{
+    auto& slot = cards[idx];
+
+    std::unique_ptr<Card>* link = &slot;
+    while (auto* ench = dynamic_cast<Enchantment*>(link->get()))
+    {
+        std::unique_ptr<Card> doomed = std::move(*link);
+        *link = ench->releaseNext();
     }
 }
 
