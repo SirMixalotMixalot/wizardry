@@ -5,7 +5,10 @@ UnsummonCommand::UnsummonCommand(int i, bool player1) : index(i), unsummonPlayer
 
 void UnsummonCommand::execute(Game& game) {
     Player* targetPlayer = unsummonPlayer1 ? game.getPlayer(1) : game.getPlayer(2);
-    
+    if (targetPlayer->getHand()->getSize() == 5)
+    {
+        throw std::runtime_error("Cannot use Unsummon. Target player's hand is full");
+    }
     if (index < 0 || index >= targetPlayer->getBoard()->getSize()) {
         throw std::out_of_range("Invalid index for unsummoning a minion.");
     }

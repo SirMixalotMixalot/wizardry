@@ -13,6 +13,11 @@ void RaiseDeadCommand::execute(Game& game) {
         throw std::runtime_error("No cards in graveyard to raise.");
     }
 
+    if (activePlayer->getBoard()->getSize() == 5)
+    {
+        throw std::runtime_error("Board is full.");
+    }
+
     auto graveyard = activePlayer->getGraveyard();
 
     // implictly assumes we add last card to the end of the graveyard
