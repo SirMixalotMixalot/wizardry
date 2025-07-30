@@ -165,7 +165,6 @@ void Player::killMinion(int index) {
     auto card = board->removeCard(index);
     if (card) {
         Minion* minion = dynamic_cast<Minion*>(card.get());
-        cout << minion->getName() << " has been killed " << minion->getAttack() << " " << minion->getDefense() << endl;
         graveyard->addCard(move(card));
     }
 }
@@ -178,6 +177,7 @@ void Player::returnMinionToHand(int index) {
     board->removeAllEnchantments(index);
     auto card = board->removeCard(index);
     if (card) {
+        cout << card->getName() << endl;
         hand->addCard(move(card));
     }
 }

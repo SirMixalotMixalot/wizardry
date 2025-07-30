@@ -10,18 +10,13 @@ MinionGainStatsTrigger::MinionGainStatsTrigger(string description, Triggers trig
     TriggeredAbility(description, trigger), minion(minion), attack(attack), defense(defense) {}
 
 unique_ptr<Command> MinionGainStatsTrigger::use() {
-    cout << "hello" << endl;
     for (int i = 0; i < minion->getOwner()->getBoard()->getSize(); i++) {
-        cout << minion->getName() << minion << endl;
-        cout << i << minion->getOwner()->getMinion(i) << minion->getOwner()->getMinion(i)->getName() << endl;
         const Minion* currentMinion = minion->getOwner()->getMinion(i);
-        // get to base
+        // get to base minion
         while (auto enchantment = dynamic_cast<const Enchantment*>(currentMinion)) {
             currentMinion = enchantment->getNext();
         }
         if (currentMinion == minion) {
-            cout << minion->getName() << minion << endl;
-            cout << i << minion->getOwner()->getMinion(i) << minion->getOwner()->getMinion(i)->getName() << endl;
             return make_unique<GainStatsCommand>(attack, defense, i, minion->getOwner());
         }
     }

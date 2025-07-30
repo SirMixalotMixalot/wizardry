@@ -251,7 +251,7 @@ void TextualDisplay::showHand(const Hand& hand) {
     std::vector<card_template_t> cards;
     for (int i = 0; i < hand.getSize(); i++) {
         if (auto enchantment = dynamic_cast<const Enchantment*>(hand.getCard(i))) {
-            auto enchantmentTemplate = displaEnchantment(enchantment);
+            auto enchantmentTemplate = displayEnchantment(enchantment);
             cards.push_back(enchantmentTemplate);
         }
         else if (auto minion = dynamic_cast<const Minion*>(hand.getCard(i))) {
@@ -285,7 +285,7 @@ void TextualDisplay::invalidCommand() {
     cerr << "Invalid command" << endl;
 }
 
-card_template_t TextualDisplay::displaEnchantment(const Enchantment* enchantment) const {
+card_template_t TextualDisplay::displayEnchantment(const Enchantment* enchantment) const {
     if (enchantment->getAttackModifier().empty() && enchantment->getDefenseModifier().empty()) {
         return display_enchantment(enchantment->getName(), enchantment->getCost(), enchantment->getDescription());
     } else {

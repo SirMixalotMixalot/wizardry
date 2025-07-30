@@ -75,7 +75,6 @@ void Game::attack(int index) {
     if (minion != nullptr && minion->getActions() > 0) {
         inactivePlayer->setHealth(inactivePlayer->getHealth() - minion->getAttack());
         minion->setActions(minion->getActions() - 1);
-        cout << "Minion actions: " << minion->getActions() << endl;
         // unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
         // int playerNumber = getPlayerNumber(activePlayer);
         // applyEnchantment(move(actionsModifier), playerNumber, index);
@@ -87,7 +86,6 @@ void Game::attack(int index, int targetIndex) {
     Minion* target = inactivePlayer->getMinion(targetIndex);
     if (minion != nullptr && target != nullptr && minion->getActions() > 0) {
         minion->setActions(minion->getActions() - 1);
-        cout << "Minion actions: " << minion->getActions() << endl;
         // unique_ptr<ActionsModifier> actionsModifier = make_unique<ActionsModifier>(activePlayer, nullptr, -1);
         // applyEnchantment(move(actionsModifier), getPlayerNumber(activePlayer), index);
 
