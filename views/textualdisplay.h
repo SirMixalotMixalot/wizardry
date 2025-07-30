@@ -16,6 +16,7 @@ class TextualDisplay : public View {
         void invalidCommand() override;
         void showErrorMessage(const std::string& message) override;
         void showWinner(const std::string& winner) override;
+        void showActivePlayer(const Game& game) const override;
     private:
         void displayTemplate(const card_template_t& templateLines) const;
         card_template_t displayEnchantment(const Enchantment* enchantment) const;

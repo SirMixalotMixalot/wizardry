@@ -17,6 +17,8 @@ class View {
         virtual void invalidCommand() = 0;
         virtual void showErrorMessage(const std::string& message) = 0;
         virtual void showWinner(const std::string& winner) = 0;
+        virtual void showActivePlayer(const Game& game) const = 0;
+
 };
 
 #endif

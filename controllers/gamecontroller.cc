@@ -82,9 +82,11 @@ void GameController::playGame(const string& initFile, const string& deck1File, c
         if (checkGameOver()) {
             break; // exit if game is over
         }
+        view->showActivePlayer(*game.get());
         getline(cin, command);
         // process command
         processCommand(command, testFlag);
+
         if (command == "quit") {
             return;
         }

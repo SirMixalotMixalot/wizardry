@@ -311,3 +311,8 @@ void TextualDisplay::showWinner(const std::string& winner) {
     card_template_t winnerTemplate = display_player_card(1, winner + " wins!!!", 100, 100);
     displayTemplate(winnerTemplate);
 }
+
+void TextualDisplay::showActivePlayer(const Game& game) const
+{
+    std::cout << "[" << game.getPlayerNumber(game.getActivePlayer()) << ": " << game.getActivePlayer()->getName() << "] ";
+}
