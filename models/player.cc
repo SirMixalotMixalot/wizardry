@@ -164,7 +164,6 @@ void Player::killMinion(int index) {
     board->removeAllEnchantments(index);
     auto card = board->removeCard(index);
     if (card) {
-        Minion* minion = dynamic_cast<Minion*>(card.get());
         graveyard->addCard(move(card));
     }
 }
@@ -177,7 +176,6 @@ void Player::returnMinionToHand(int index) {
     board->removeAllEnchantments(index);
     auto card = board->removeCard(index);
     if (card) {
-        cout << card->getName() << endl;
         hand->addCard(move(card));
     }
 }
