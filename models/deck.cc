@@ -31,6 +31,9 @@ Deck::Deck(const string& deckFile, Player* owner) : owner(owner) {
     }
     
     file.close();
+
+    // reverse vector
+    std::reverse(cards.begin(), cards.end());
 }
 
 unique_ptr<Card> Deck::draw() {
